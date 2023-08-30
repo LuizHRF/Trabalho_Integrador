@@ -4,4 +4,5 @@ Repositório criado com o propósito de armazenar e fazer controle de versões d
 Trabalho desenvolvido no 4º período do curso de Ciência da Computação - UFFS - Campus Chapecó
 
 Agosto de 2023
+
 Gabrielli Grossi e Luiz Faccio
