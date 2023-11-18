@@ -10,7 +10,7 @@ Trabalho desenvolvido no 4º período do curso de Ciência da Computação - UFF
   Possui:
   * As documentações referentes ao projeto;
   * Os roteiros de entrevista com o cliente bem como o documento de requisitos;
-  * O modelo conseitual do banco de dados da aplicação;
+  * O modelo conceitual do banco de dados da aplicação;
 
 * Projeto:
 
