@@ -1,14 +1,20 @@
 import React from "react";
 import DashBoard from "./Dashboard/DashBoard";
-import CadastroVendas from "./Cadastro_de_Vendas/CadastroVendas";
-import CadastroClientes from "./Cadastro_de_Clientes/CadastroClientes";
+import CadastroVendas from "./Gerenciar_Vendas/GerenciarVendas";
+import GerenciarClientes from "./Gerenciar_Clientes/GerenciarClientes";
+import GerenciarDestinos from "./Gerenciar_Destinos/GerenciarDestinos";
+import TemplatePagina from "./TemplatePagina";
+import CadastrarClientes from "./Gerenciar_Clientes/CadastrarClientes";
 
 function Embarque22(){
     return(
         <>
             <DashBoard />
             <CadastroVendas />
-            <CadastroClientes />
+            <GerenciarDestinos />
+
+            <GerenciarClientes />
+            
         </>
     )
 }

@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 import Divider from '@mui/material/Divider';
 
 
-function AbaClientes(){
+function CadastrarClientes(){
     return(
     <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2} style={{margin:"10px", border:"1px solid lightGrey"}}>
@@ -93,4 +93,4 @@ function AbaClientes(){
     );
 }
 
-export default AbaClientes;
+export default CadastrarClientes;

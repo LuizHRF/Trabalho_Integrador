@@ -9,7 +9,7 @@ function TemplatePagina(props){
     return(
 
         <Stack spacing ={2} style={{border:"2px solid black", margin:"150px", marginTop: "50px", boxShadow: "0px 0px 50px black"}}>
-        <Header acesso="Agente de viagens" mensagem="Cadastro de vendas"/>
+        <Header acesso="Agente de viagens" mensagem={props.mensagem}/>
 
         <Grid container spacing={0}>
             <Grid xs={3}>

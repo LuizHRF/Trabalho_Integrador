@@ -13,11 +13,13 @@ export default function Buttons(){
     return(
         <>
 
-        <Button sx={Psx} style={estiloBotao} variant="contained">FUNÇÃO 1</Button>
+        <Button sx={Psx} style={estiloBotao} variant="contained">Gerenciar Vendas</Button>
         
-        <Button sx={Psx} style={estiloBotao} variant="contained">FUNÇÃO 2</Button>
+        <Button sx={Psx} style={estiloBotao} variant="contained">Gerenciar Clientes</Button>
 
-        <Button sx={Psx} style={estiloBotao} variant="contained">FUNÇÃO 3</Button>
+        <Button sx={Psx} style={estiloBotao} variant="contained">Gerenciar Destinos</Button>
+
+        <Button sx={Psx} style={estiloBotao} variant="contained">Gerenciar Interesses</Button>
 
         </>
     )

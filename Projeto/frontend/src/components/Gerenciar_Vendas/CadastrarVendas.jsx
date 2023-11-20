@@ -7,7 +7,7 @@ import Divider from '@mui/material/Divider';
 import InputAdornment from '@mui/material/InputAdornment';
 import { Typography } from "@mui/material";
 
-function AbaVendas(){
+function CadastrarVendas(){
     return(
     <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2} style={{margin:"10px", border:"1px solid lightGrey"}}>
@@ -84,4 +84,4 @@ function AbaVendas(){
     );
 }
 
-export default AbaVendas;
+export default CadastrarVendas;
