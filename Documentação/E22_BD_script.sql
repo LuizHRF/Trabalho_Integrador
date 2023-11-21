@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS cliente(
     telefone VARCHAR(15) NOT NULL,
     dt_nasc TIMESTAMP NOT NULL,
     nome VARCHAR(30) NOT NULL,
-    ft_documento VARCHAR(50) NOT NULL,
+    ft_documento VARCHAR(50),
     renda FLOAT NOT NULL,
     profissao VARCHAR(50) NOT NULL,
     endereco VARCHAR(50) NOT NULL,
