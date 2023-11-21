@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS destino(
     nome VARCHAR(100) NOT NULL,
     pais VARCHAR(20) NOT NULL,
     descricao VARCHAR(300) NOT NULL,
-    CONSTRAINT pk_destino PRIMARY KEY (id, nome),
+    CONSTRAINT pk_destino PRIMARY KEY (id),
     CONSTRAINT unique_destino UNIQUE (id)
 );
 
