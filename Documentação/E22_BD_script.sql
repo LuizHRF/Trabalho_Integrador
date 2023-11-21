@@ -3,10 +3,10 @@ CREATE TABLE IF NOT EXISTS agente(
     cpf INTEGER NOT NULL,
     dtnasc TIMESTAMP NOT NULL,
     CONSTRAINT pk_agente PRIMARY KEY (cpf)
-)
+);
 
 CREATE TABLE IF NOT EXISTS agente_info(
-    ferias_disp INETGER,
+    ferias_disp INTEGER,
     comissao VARCHAR(100),
     ender VARCHAR(100) NOT NULL,
     salario FLOAT NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS agente_info(
     cpf INTEGER NOT NULL,
     CONSTRAINT pk_info PRIMARY KEY (ultima_modif, cpf),
     CONSTRAINT fk_info_agente FOREIGN KEY (cpf) REFERENCES agente(cpf)
-)
+);
 
 CREATE TABLE IF NOT EXISTS destino(
     id SERIAL NOT NULL,
@@ -25,7 +25,8 @@ CREATE TABLE IF NOT EXISTS destino(
     pais VARCHAR(20) NOT NULL,
     descricao VARCHAR(300) NOT NULL,
     CONSTRAINT pk_destino PRIMARY KEY (id, nome),
-)
+    CONSTRAINT unique_destino UNIQUE (id)
+);
 
 CREATE TABLE IF NOT EXISTS interesse(
     cliente_nome VARCHAR(40) NOT NULL,
@@ -36,7 +37,7 @@ CREATE TABLE IF NOT EXISTS interesse(
     destino INTEGER NOT NULL,
     CONSTRAINT pk_interesse PRIMARY KEY (id),
     CONSTRAINT fk_interesse_destino FOREIGN KEY (destino) REFERENCES destino(id)
-)
+);
 
 CREATE TABLE IF NOT EXISTS cliente(
     cpf INTEGER NOT NULL,
@@ -49,8 +50,8 @@ CREATE TABLE IF NOT EXISTS cliente(
     profissao VARCHAR(50) NOT NULL,
     endereco VARCHAR(50) NOT NULL,
     observacoes VARCHAR(100),
-    CONSTRAINT pk_cliente PRIMARY KEY(cpf),
-)
+    CONSTRAINT pk_cliente PRIMARY KEY(cpf)
+);
 
 CREATE TABLE IF NOT EXISTS acompanhante(
     nome VARCHAR(30) NOT NULL,
@@ -59,7 +60,7 @@ CREATE TABLE IF NOT EXISTS acompanhante(
     cliente_acompanhado INTEGER NOT NULL,
     CONSTRAINT pk_acompanhante PRIMARY KEY (cpf),
     CONSTRAINT fk_acompanhante_cliente FOREIGN KEY (cliente_acompanhado) REFERENCES cliente(cpf)
-)
+);
 
 CREATE TABLE IF NOT EXISTS venda(
     num_orcamento INTEGER NOT NULL,
@@ -79,5 +80,4 @@ CREATE TABLE IF NOT EXISTS venda(
     CONSTRAINT fk_venda_agente FOREIGN KEY (ag_vendedor) REFERENCES agente(cpf),
     CONSTRAINT fk_venda_destino FOREIGN KEY (destino) REFERENCES destino(id),
     CONSTRAINT fk_venda_cliente FOREIGN KEY (cliente) REFERENCES cliente(cpf)
-)
-
+);
