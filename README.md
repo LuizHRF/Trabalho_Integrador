@@ -11,6 +11,7 @@ Trabalho desenvolvido no 4º período do curso de Ciência da Computação - UFF
   * As documentações referentes ao projeto;
   * Os roteiros de entrevista com o cliente bem como o documento de requisitos;
   * O modelo conceitual do banco de dados da aplicação;
+  * O protótipo do script de criação do banco de daods;
 
 * Projeto:
 
