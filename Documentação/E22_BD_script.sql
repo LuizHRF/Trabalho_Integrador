@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS agente(
     dtnasc TIMESTAMP NOT NULL,
     CONSTRAINT pk_agente PRIMARY KEY (cpf)
 );
+-- INSERT INTO agente(nome, cpf, dtnasc) VALUES ('Gabrielli', 987654321, '01-01-2001');
 
 CREATE TABLE IF NOT EXISTS agente_info(
     ferias_disp INTEGER,
@@ -16,17 +17,18 @@ CREATE TABLE IF NOT EXISTS agente_info(
     CONSTRAINT pk_info PRIMARY KEY (ultima_modif, cpf),
     CONSTRAINT fk_info_agente FOREIGN KEY (cpf) REFERENCES agente(cpf)
 );
+--INSERT INTO agente_info(ferias_disp, comissao, ender, salario, ultima_modif, nivel_acesso, cpf) VALUES (0, '3,5% de comissão, sem acordos', 'Não tem endereço', 12000.95, NOW(), 0, 1111);
 
 CREATE TABLE IF NOT EXISTS destino(
     id SERIAL NOT NULL,
     doc_obrigatorios VARCHAR(100),
-    caract_principais VARCHAR(100),
     nome VARCHAR(100) NOT NULL,
     pais VARCHAR(20) NOT NULL,
     descricao VARCHAR(300) NOT NULL,
-    CONSTRAINT pk_destino PRIMARY KEY (id),
-    CONSTRAINT unique_destino UNIQUE (id)
+    CONSTRAINT pk_destino PRIMARY KEY (id)
 );
+
+--INSERT INTO destino(doc_obrigatorios, caract_principais, nome, pais, descricao) VALUES ('Documento de identificação, passaporte e visto', 'Chapecó', 'Brasil', 'Local com temperaturas amenas, geralmente possui passeios baratos');
 
 CREATE TABLE IF NOT EXISTS interesse(
     cliente_nome VARCHAR(40) NOT NULL,
@@ -38,6 +40,7 @@ CREATE TABLE IF NOT EXISTS interesse(
     CONSTRAINT pk_interesse PRIMARY KEY (id),
     CONSTRAINT fk_interesse_destino FOREIGN KEY (destino) REFERENCES destino(id)
 );
+--INSERT INTO interesse(cliente_nome, data_interesse, contato, qtd_passageiros, destino) VALUES ('José', '01-12-2024', 'Email: josesantos@gmail.com', 2, 1);
 
 CREATE TABLE IF NOT EXISTS cliente(
     cpf INTEGER NOT NULL,
