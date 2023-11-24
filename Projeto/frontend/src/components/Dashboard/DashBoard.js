@@ -1,21 +1,14 @@
 import React from 'react'
-import Stack from '@mui/system/Stack';
-import Buttons from './Buttons';
-import Header from '../Header';
+import Box from '@mui/system/Box';
+
 
 function DashBoard() {
+
+  console.log('estou no dashboard');
   return (
-    <Stack spacing ={2} style={{border:"2px solid black", margin:"300px", marginTop: "200px", boxShadow: "0px 0px 50px black"}}>
-
-        <Header acesso="Agente de viagens" mensagem="Bem vindo novamente!"/>
-
-        <Stack spacing={3} style ={{padding:"10px", marginBottom:"10px"}}>
-
-          <Buttons />
-
-        </Stack>
-      
-    </Stack>
+    <Box sx={{ flexGrow: 1 }}>
+      <img src="/embarque.png" alt='Dashboard' />
+    </Box>
   );
 }
 

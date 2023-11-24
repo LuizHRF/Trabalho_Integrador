@@ -2,6 +2,7 @@ import React from "react";
 import Grid from '@mui/material/Unstable_Grid2';
 import Box from '@mui/system/Box';
 import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
 function CadastrarDestinos(){
     return(
@@ -28,6 +29,10 @@ function CadastrarDestinos(){
                 <TextField fullWidth size="small" label="Descrição" variant="outlined" />
             </Grid>
             
+            <Grid xs={12}>
+                <Button variant="contained">Cadastrar</Button>
+                <Button style={{marginLeft: "10px"}}variant="contained">Limpar</Button>
+            </Grid>
 
         </Grid>
     </Box>

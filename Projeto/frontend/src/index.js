@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import Embarque22 from './components/Embarque22';
+import TemplatePagina from './components/TemplatePagina';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Embarque22 />
+    <TemplatePagina />
   </React.StrictMode>
 );
 

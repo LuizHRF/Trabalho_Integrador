@@ -6,6 +6,7 @@ import TextField from '@mui/material/TextField';
 import Divider from '@mui/material/Divider';
 import InputAdornment from '@mui/material/InputAdornment';
 import { Typography } from "@mui/material";
+import Button from '@mui/material/Button';
 
 function CadastrarVendas(){
     return(
@@ -76,7 +77,11 @@ function CadastrarVendas(){
                     Valor final: R$XXX,00
                 </Typography>
             </Grid>
-        
+
+            <Grid xs={12}>
+                <Button variant="contained">Cadastrar</Button>
+                <Button style={{marginLeft: "10px"}}variant="contained">Limpar</Button>
+            </Grid>
 
         </Grid>
     </Box>
