@@ -5,19 +5,28 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Stack from '@mui/system/Stack';
 
 import DashBoard from "./Dashboard/DashBoard";
-import CadastroVendas from "./Gerenciar_Vendas/GerenciarVendas";
-import GerenciarClientes from "./Gerenciar_Clientes/GerenciarClientes";
+
 import CadastrarClientes from "./Gerenciar_Clientes/CadastrarClientes";
 import CadastrarVendas from "./Gerenciar_Vendas/CadastrarVendas";
 import CadastrarDestinos from "./Gerenciar_Destinos/CadastrarDestinos";
-
+import ConsultarVendas from "./Gerenciar_Vendas/ConsultarVendas";
+import ConsultarDestinos from "./Gerenciar_Destinos/ConsultarDestinos";
+import ConsultarClientes from "./Gerenciar_Clientes/ConsultarClientes";
 
 function TemplatePagina(props){
 
     const [showDashBoard, setShwoDashBoard] = React.useState(true);
-    const [showVendas, setShowVendas] = React.useState(false);
-    const [showClientes, setShowClientes] = React.useState(false);
-    const [showDestinos, setShowDestinos] = React.useState(false);
+
+
+    const [showVendas, setShowVendas] = React.useState(false); //Cadastro de vendas
+    const [showConsultaVendas, setShowConsultaVendas] = React.useState(false);  //Consulta de vendas
+
+    const [showClientes, setShowClientes] = React.useState(false); //Cadastro de Clientes
+    const [showConsultaClientes, setShowConsultaClientes] = React.useState(false); //Consulta de clientes
+
+    const [showDestinos, setShowDestinos] = React.useState(false); //Cadastro de destinos
+    const [showConsultaDestinos, setShowConsultaDestinos] = React.useState(false); // Consulta de destinos
+
     const [mensagem, setMensagem] = React.useState("Bem vindo de volta!");
 
     return(
@@ -28,7 +37,14 @@ function TemplatePagina(props){
         <Grid container spacing={0}>
             <Grid xs={3}>
                 <Stack spacing={2} style ={{padding:"10px", marginBottom:"10px"}}>
-                <Buttons sMensagem={setMensagem} sClientes={setShowClientes} sVendas={setShowVendas} sDestinos={setShowDestinos} sDashboard={setShwoDashBoard} />
+                <Buttons sMensagem={setMensagem} 
+                    sClientes={setShowClientes} 
+                    sVendas={setShowVendas} 
+                    sDestinos={setShowDestinos} 
+                    sDashboard={setShwoDashBoard} 
+                    sConsultaVendas ={setShowConsultaVendas} 
+                    sConsultaClientes = {setShowConsultaClientes} 
+                    sConsultaDestinos = {setShowConsultaDestinos}/>
                 </Stack>
             </Grid>
             <Grid xs={9}>
@@ -37,6 +53,9 @@ function TemplatePagina(props){
             {showVendas && <CadastrarVendas />}
             {showClientes && <CadastrarClientes />}
             {showDestinos && <CadastrarDestinos />}
+            {showConsultaVendas && <ConsultarVendas />}
+            {showConsultaDestinos && <ConsultarDestinos />}
+            {showConsultaClientes && <ConsultarClientes />}
 
         </Grid>
         </Grid>

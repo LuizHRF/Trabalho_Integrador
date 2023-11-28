@@ -9,11 +9,12 @@ const estiloBotao = {
 }
 const Psx = {
     fontSize: "20px",
+
 }
 
 export default function Buttons(props){
 
-    function PositionedMenu() {
+    function PositionedMenuVendas() {
         const [anchorEl, setAnchorEl] = React.useState(null);
         const open = Boolean(anchorEl);
         const handleClick = (event) => {
@@ -28,7 +29,7 @@ export default function Buttons(props){
         return (
           <div>
             <Button sx={Psx} style={estiloBotao}
-              id="demo-positioned-button"
+              fullWidth="true"
               aria-controls={open ? 'demo-positioned-menu' : undefined}
               aria-haspopup="true"
               aria-expanded={open ? 'true' : undefined}
@@ -62,11 +63,133 @@ export default function Buttons(props){
               </MenuItem>
               <MenuItem sx={Psx} style={estiloBotao} onClick = {() => {
                   desactivate(); 
-                  props.sClientes(true);
-                  novamensagem("Gerenciar Clientes");
+                  props.sConsultaVendas(true);
+                  novamensagem("Consulta de vendas");
                   handleClose();
                   }} 
-                  variant="contained">Gerenciar Clientes
+                  variant="contained">Consultar vendas
+              </MenuItem>
+      
+            </Menu>
+          </div>
+        );
+      }
+
+    function PositionedMenuClientes() {
+        const [anchorEl, setAnchorEl] = React.useState(null);
+        const open = Boolean(anchorEl);
+        const handleClick = (event) => {
+          setAnchorEl(event.currentTarget);
+        };
+      
+        const handleClose = () => {
+          setAnchorEl(null);
+        }
+      
+      
+        return (
+          <div>
+            <Button sx={Psx} style={estiloBotao}
+              fullWidth="true"
+              aria-controls={open ? 'demo-positioned-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+              onClick={handleClick}
+              variant="contained"
+            >
+              Gerenciar Clientes
+            </Button>
+            <Menu
+              id="demo-positioned-menu"
+              aria-labelledby="demo-positioned-button"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+            >
+              <MenuItem sx={Psx} style={estiloBotao} onClick = {() => {
+                  desactivate(); 
+                  props.sClientes(true)
+                  novamensagem("Cadastro de Clientes")
+                  handleClose();
+                  }}
+                  variant="contained">Cadastrar Clientes
+              </MenuItem>
+              <MenuItem sx={Psx} style={estiloBotao} onClick = {() => {
+                  desactivate(); 
+                  props.sConsultaClientes(true);
+                  novamensagem("Consulta de Clientes");
+                  handleClose();
+                  }} 
+                  variant="contained">Consultar Clientes
+              </MenuItem>
+      
+            </Menu>
+          </div>
+        );
+      }
+
+      function PositionedMenuDestinos() {
+        const [anchorEl, setAnchorEl] = React.useState(null);
+        const open = Boolean(anchorEl);
+        const handleClick = (event) => {
+          setAnchorEl(event.currentTarget);
+        };
+      
+        const handleClose = () => {
+          setAnchorEl(null);
+        }
+      
+      
+        return (
+          <div>
+            <Button sx={Psx} style={estiloBotao}
+              fullWidth="true"
+              aria-controls={open ? 'demo-positioned-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+              onClick={handleClick}
+              variant="contained"
+            >
+              Gerenciar Destinos
+            </Button>
+            <Menu
+              id="demo-positioned-menu"
+              aria-labelledby="demo-positioned-button"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+            >
+              <MenuItem sx={Psx} style={estiloBotao} onClick = {() => {
+                  desactivate(); 
+                  props.sDestinos(true)
+                  novamensagem("Cadastro de destinos")
+                  handleClose();
+                  }}
+                  variant="contained">Cadastrar Destinos
+              </MenuItem>
+              <MenuItem sx={Psx} style={estiloBotao} onClick = {() => {
+                  desactivate(); 
+                  props.sConsultaDestinos(true);
+                  novamensagem("Consulta de Destinos");
+                  handleClose();
+                  }} 
+                  variant="contained">Consultar Destinos
               </MenuItem>
       
             </Menu>
@@ -75,6 +198,9 @@ export default function Buttons(props){
       }
 
     function desactivate(){
+        props.sConsultaDestinos(false);
+        props.sConsultaClientes(false);
+        props.sConsultaVendas(false);
         props.sVendas(false);
         props.sClientes(false);
         props.sDashboard(false);
@@ -95,22 +221,11 @@ export default function Buttons(props){
             }} 
             variant="contained">DashBoard</Button>
 
-        <PositionedMenu />
+        <PositionedMenuVendas />
         
-        <Button sx={Psx} style={estiloBotao} onClick = {() => {
-            desactivate(); 
-            props.sClientes(true);
-            novamensagem("Gerenciar Clientes");
-            }} 
-            variant="contained">Gerenciar Clientes</Button>
+        <PositionedMenuClientes />
 
-        <Button sx={Psx} style={estiloBotao} onClick = {() => {
-            desactivate(); 
-            props.sDestinos(true)
-            novamensagem("Gerenciar Destinos")
-            }}
-            variant="contained">Gerenciar Destinos</Button>
-
+        <PositionedMenuDestinos/>
         
         <Button sx={Psx} style={estiloBotao} onClick = {() => {
             desactivate(); 

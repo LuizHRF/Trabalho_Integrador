@@ -60,9 +60,9 @@ CREATE TABLE IF NOT EXISTS acompanhante(
     nome VARCHAR(30) NOT NULL,
     cpf INTEGER NOT NULL,
     dt_nasc TIMESTAMP NOT NULL,
-    cliente_acompanhado INTEGER NOT NULL,
+    viagem INTEGER NOT NULL,
     CONSTRAINT pk_acompanhante PRIMARY KEY (cpf),
-    CONSTRAINT fk_acompanhante_cliente FOREIGN KEY (cliente_acompanhado) REFERENCES cliente(cpf)
+    CONSTRAINT fk_acompanhante_viagem FOREIGN KEY (viagem) REFERENCES venda(num_orcamento)
 );
 
 CREATE TABLE IF NOT EXISTS venda(
