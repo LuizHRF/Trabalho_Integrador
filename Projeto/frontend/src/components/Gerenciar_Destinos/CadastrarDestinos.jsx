@@ -10,12 +10,12 @@ function CadastrarDestinos(){
         <Grid container spacing={2} style={{margin:"10px", border:"1px solid lightGrey"}}>
             
             <Grid xs={12}>
-                Nome do destino:
-                <TextField fullWidth size="small" label="Nome" variant="outlined" />
+                Nome do Destino:
+                <TextField fullWidth size="small" label="Nome do destino" variant="outlined" />
             </Grid>
 
             <Grid xs={12}>
-                País:
+                Destino:
                 <TextField fullWidth size="small" label="País" variant="outlined" />
             </Grid>
 

@@ -3,6 +3,7 @@ import Header from "./Header";
 import Buttons from "./Dashboard/Buttons";
 import Grid from '@mui/material/Unstable_Grid2';
 import Stack from '@mui/system/Stack';
+import axios from "axios";
 
 import DashBoard from "./Dashboard/DashBoard";
 
@@ -12,6 +13,12 @@ import CadastrarDestinos from "./Gerenciar_Destinos/CadastrarDestinos";
 import ConsultarVendas from "./Gerenciar_Vendas/ConsultarVendas";
 import ConsultarDestinos from "./Gerenciar_Destinos/ConsultarDestinos";
 import ConsultarClientes from "./Gerenciar_Clientes/ConsultarClientes";
+import CadastrarInteresses from "./Gerenciar_Interesses/CadastrarInteresses";
+import ConsultarInteresses from "./Gerenciar_Interesses/ConsultarInteresses";
+
+axios.defaults.baseURL = "http://localhost:3010";
+axios.defaults.headers.common["Content-Type"] = 
+"application/json;charset=utf-8";
 
 function TemplatePagina(props){
 
@@ -26,6 +33,9 @@ function TemplatePagina(props){
 
     const [showDestinos, setShowDestinos] = React.useState(false); //Cadastro de destinos
     const [showConsultaDestinos, setShowConsultaDestinos] = React.useState(false); // Consulta de destinos
+
+    const [showInteresses, setShowInteresses] = React.useState(false);
+    const [showConsultaInteresses, setShowConsultaInteresses] = React.useState(false);
 
     const [mensagem, setMensagem] = React.useState("Bem vindo de volta!");
 
@@ -44,7 +54,10 @@ function TemplatePagina(props){
                     sDashboard={setShwoDashBoard} 
                     sConsultaVendas ={setShowConsultaVendas} 
                     sConsultaClientes = {setShowConsultaClientes} 
-                    sConsultaDestinos = {setShowConsultaDestinos}/>
+                    sConsultaDestinos = {setShowConsultaDestinos}
+                    sInteresses = {setShowInteresses}
+                    sConsultaInteresses = {setShowConsultaInteresses}/>
+
                 </Stack>
             </Grid>
             <Grid xs={9}>
@@ -56,6 +69,8 @@ function TemplatePagina(props){
             {showConsultaVendas && <ConsultarVendas />}
             {showConsultaDestinos && <ConsultarDestinos />}
             {showConsultaClientes && <ConsultarClientes />}
+            {showInteresses && <CadastrarInteresses />}
+            {showConsultaInteresses && <ConsultarInteresses />}
 
         </Grid>
         </Grid>

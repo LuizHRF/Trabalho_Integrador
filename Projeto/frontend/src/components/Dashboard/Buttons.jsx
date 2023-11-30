@@ -53,7 +53,7 @@ export default function Buttons(props){
                 horizontal: 'left',
               }}
             >
-              <MenuItem sx={Psx} style={estiloBotao} onClick = {() => {
+              <MenuItem sx={Psx} style={estiloBotao} fullWidth="true" onClick = {() => {
                   desactivate(); 
                   props.sVendas(true)
                   novamensagem("Gerenciar Vendas")
@@ -61,7 +61,7 @@ export default function Buttons(props){
                   }}
                   variant="contained">Cadastrar Vendas
               </MenuItem>
-              <MenuItem sx={Psx} style={estiloBotao} onClick = {() => {
+              <MenuItem sx={Psx} style={estiloBotao} fullWidth="true" onClick = {() => {
                   desactivate(); 
                   props.sConsultaVendas(true);
                   novamensagem("Consulta de vendas");
@@ -197,7 +197,70 @@ export default function Buttons(props){
         );
       }
 
+      function PositionedMenuInteresses() {
+        const [anchorEl, setAnchorEl] = React.useState(null);
+        const open = Boolean(anchorEl);
+        const handleClick = (event) => {
+          setAnchorEl(event.currentTarget);
+        };
+      
+        const handleClose = () => {
+          setAnchorEl(null);
+        }
+      
+      
+        return (
+          <div>
+            <Button sx={Psx} style={estiloBotao}
+              fullWidth="true"
+              aria-controls={open ? 'demo-positioned-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+              onClick={handleClick}
+              variant="contained"
+            >
+              Gerenciar Interesses
+            </Button>
+            <Menu
+              id="demo-positioned-menu"
+              aria-labelledby="demo-positioned-button"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+            >
+              <MenuItem sx={Psx} style={estiloBotao} onClick = {() => {
+                  desactivate(); 
+                  props.sInteresses(true)
+                  novamensagem("Cadastro de Interesses")
+                  handleClose();
+                  }}
+                  variant="contained">Cadastrar Interesses
+              </MenuItem>
+              <MenuItem sx={Psx} style={estiloBotao} onClick = {() => {
+                  desactivate(); 
+                  props.sConsultaInteresses(true);
+                  novamensagem("Consulta de Interesses");
+                  handleClose();
+                  }} 
+                  variant="contained">Consultar Interesses
+              </MenuItem>
+      
+            </Menu>
+          </div>
+        );
+      }
+
     function desactivate(){
+        props.sInteresses(false);
+        props.sConsultaInteresses(false);
         props.sConsultaDestinos(false);
         props.sConsultaClientes(false);
         props.sConsultaVendas(false);
@@ -227,13 +290,7 @@ export default function Buttons(props){
 
         <PositionedMenuDestinos/>
         
-        <Button sx={Psx} style={estiloBotao} onClick = {() => {
-            desactivate(); 
-            props.sDashboard(true)
-            novamensagem("Gerenciar Interesses");
-
-            }} 
-            variant="contained">Gerenciar Interesses</Button>
+        <PositionedMenuInteresses/>
         
 
         </>

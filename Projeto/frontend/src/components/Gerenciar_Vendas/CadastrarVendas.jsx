@@ -1,24 +1,29 @@
 import React from "react";
 import Grid from '@mui/material/Unstable_Grid2';
 import Box from '@mui/system/Box';
-import BasicSelect from "./BasicSelect";
 import TextField from '@mui/material/TextField';
 import Divider from '@mui/material/Divider';
 import InputAdornment from '@mui/material/InputAdornment';
 import { Typography } from "@mui/material";
 import Button from '@mui/material/Button';
+import SelectDestino from "./SelectDestino";
 
 function CadastrarVendas(){
+
+    const [cliente, setCliente] = React.useState();
+    const [destino, setDestino] = React.useState();
+
+
     return(
     <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2} style={{margin:"10px", border:"1px solid lightGrey"}}>
             <Grid xs={6}>
                 Cliente:
-                <BasicSelect />
+                {destino}
             </Grid>
             <Grid xs={6}>
                 Destino:
-                <BasicSelect />
+                <SelectDestino setDestino={setDestino}/>
             </Grid>
 
 

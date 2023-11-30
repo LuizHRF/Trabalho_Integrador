@@ -23,9 +23,9 @@ export default function BasicSelect() {
           label="Age"
           onChange={handleChange}
         >
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
+          <MenuItem value={10}>Porto de Galinhas</MenuItem>
+          <MenuItem value={20}>Paris</MenuItem>
+          <MenuItem value={30}>Natal</MenuItem>
         </Select>
       </FormControl>
     </Box>
