@@ -10,6 +10,7 @@ function ConsultarClientes(props){
 
     React.useEffect(()=> {
         const token = localStorage.getItem("token");
+        console.log(token);
 		const res = axios.get("/clientes", {
 			headers: {
 				Authorization: `bearer ${token}`,
