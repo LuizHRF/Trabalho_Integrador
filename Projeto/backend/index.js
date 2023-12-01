@@ -1,15 +1,116 @@
 const express = require("express");
 const cors = require("cors");
-
-const app = express();
-app.use(cors());
-app.use(express.json());
+const session = require("express-session");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+// const { Strategy, ExtractJwt } = require("passport-jwt");
+const JwtStrategy = require('passport-jwt').Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
 
 const pgp = require("pg-promise")({});
 
 const usuario = "postgres";
 const senha = "postgres";
 const db = pgp(`postgres://${usuario}:${senha}@localhost:5432/embarque22`);
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+app.use(
+	session({
+		secret: '"alguma_frase_muito_doida_pra_servir_de_SECRET',
+		resave: false,
+		saveUninitialized: false,
+		cookie: { secure: true },
+	}),
+);
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(
+	new LocalStrategy(
+		{
+			usernameField: "cpf",
+			passwordField: "password",
+		},
+		async (username, password, done) => {
+			try {
+				// busca o usuário no banco de dados
+				const user = await db.oneOrNone(
+					"SELECT a.cpf, i.password, i.nivel_acesso FROM agente a NATURAL JOIN agente_info i WHERE a.cpf = $1;",
+					[cpf],
+				);
+
+				// se não encontrou, retorna erro
+				if (!user) {
+					return done(null, false, { message: "Usuário incorreto." });
+				}
+
+				// verifica se o hash da senha bate com a senha informada
+				const passwordMatch = await bcrypt.compare(
+					password,
+					user.password,
+				);
+
+				// se senha está ok, retorna o objeto usuário
+				if (passwordMatch) {
+					console.log("Usuário autenticado!");
+					return done(null, user);
+				} else {
+					// senão, retorna um erro
+					return done(null, false, { message: "Senha incorreta." });
+				}
+			} catch (error) {
+				return done(error);
+			}
+		},
+	),
+);
+
+passport.use(
+	new JwtStrategy(
+		{
+			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+			secretOrKey: "your-secret-key",
+		},
+		async (payload, done) => {
+			try {
+				const user = await db.oneOrNone(
+					"SELECT a.cpf, i.password, i.nivel_acesso FROM agente a NATURAL JOIN agente_info i WHERE a.cpf = $1;"
+					[payload.username],
+				);
+
+				if (user) {
+					done(null, user);
+				} else {
+					done(null, false);
+				}
+			} catch (error) {
+				done(error, false);
+			}
+		},
+	),
+);
+
+passport.serializeUser(function (user, cb) {
+	process.nextTick(function () {
+		return cb(null, {
+			user_id: user.user_id,
+			username: user.user_id,
+		});
+	});
+});
+
+passport.deserializeUser(function (user, cb) {
+	process.nextTick(function () {
+		return cb(null, user);
+	});
+});
+
+const requireJWTAuth = passport.authenticate("jwt", { session: false });
 
 app.listen(3010, () => console.log("Servidor rodando na porta 3010."));
 
@@ -70,7 +171,7 @@ app.post("/newInteresse", async (req, res) => {
 app.get("/vendas", async (req, res) =>{
 
     try{
-        const vendas = await db.any("SELECT v.*, a.nome, d.nome, c.nome FROM venda v JOIN agente a ON v.ag_vendedor = a.cpf JOIN destino d ON d.id = v.destino JOIN cliente c ON v.cliente = c.cpf;");
+        const vendas = await db.any("SELECT v.*, a.nome as ag_nome, d.nome, c.nome FROM venda v JOIN agente a ON v.ag_vendedor = a.cpf JOIN destino d ON d.id = v.destino JOIN cliente c ON v.cliente = c.cpf;");
         console.log('Retornando todas as vendas');
         res.json(vendas).status(200);
     } catch(error){

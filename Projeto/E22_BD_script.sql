@@ -2,20 +2,21 @@ SET DATESTYLE = 'DMY';
 
 CREATE TABLE IF NOT EXISTS agente(
     nome VARCHAR(30) NOT NULL,
-    cpf INTEGER NOT NULL,
+    cpf BIGINT NOT NULL,
     dtnasc DATE NOT NULL,
     CONSTRAINT pk_agente PRIMARY KEY (cpf)
 );
 -- INSERT INTO agente(nome, cpf, dtnasc) VALUES ('Gabrielli', 987654321, '01-01-2001');
 
 CREATE TABLE IF NOT EXISTS agente_info(
-    ferias_disp INTEGER,
+    ferias_disp INTEGER DEfaULT 0,
     comissao VARCHAR(100),
     ender VARCHAR(100) NOT NULL,
     salario NUMERIC NOT NULL,
     ultima_modif DATE NOT NULL DEFAULT CURRENT_DATE,
     nivel_acesso INTEGER NOT NULL,
-    cpf INTEGER NOT NULL,
+    cpf BIGINT NOT NULL,
+    password VARCHAR(50),
     CONSTRAINT pk_info PRIMARY KEY (ultima_modif, cpf),
     CONSTRAINT fk_info_agente FOREIGN KEY (cpf) REFERENCES agente(cpf)
 );
@@ -46,7 +47,7 @@ CREATE TABLE IF NOT EXISTS interesse(
 --INSERT INTO interesse(cliente_nome, data_interesse, contato, qtd_passageiros, destino) VALUES ('José', '01-12-2024', 'Email: josesantos@gmail.com', 2, 1);
 
 CREATE TABLE IF NOT EXISTS cliente(
-    cpf INTEGER NOT NULL,
+    cpf BIGINT NOT NULL,
     email VARCHAR(40) NOT NULL,
     telefone VARCHAR(15) NOT NULL,
     dt_nasc DATE NOT NULL,
@@ -83,7 +84,7 @@ CREATE TABLE IF NOT EXISTS venda(
 
 CREATE TABLE IF NOT EXISTS acompanhante(
     nome VARCHAR(30) NOT NULL,
-    cpf INTEGER NOT NULL,
+    cpf BIGINT NOT NULL,
     dt_nasc DATE NOT NULL,
     viagem INTEGER NOT NULL,
     CONSTRAINT pk_acompanhante PRIMARY KEY (cpf),
