@@ -4,7 +4,7 @@ import Buttons from "./Dashboard/Buttons";
 import Grid from '@mui/material/Unstable_Grid2';
 import Stack from '@mui/system/Stack';
 import axios from "axios";
-
+import Login from "./Login";
 import DashBoard from "./Dashboard/DashBoard";
 
 import CadastrarClientes from "./Gerenciar_Clientes/CadastrarClientes";
@@ -21,6 +21,27 @@ axios.defaults.headers.common["Content-Type"] =
 "application/json;charset=utf-8";
 
 function TemplatePagina(props){
+
+    const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+
+
+    React.useEffect(() => {
+        // verifica se já está logado
+        const token = localStorage.getItem("token");
+        if (token) {
+            setIsLoggedIn(true);
+           }
+    }, []);
+
+    const handleLogin = () => {
+        setIsLoggedIn(true);
+    };
+
+    const handleLogout = () => {
+        // Clear the token from localStorage
+        localStorage.removeItem("token");
+        setIsLoggedIn(false);
+    };
 
     const [showDashBoard, setShwoDashBoard] = React.useState(true);
 
@@ -40,42 +61,44 @@ function TemplatePagina(props){
     const [mensagem, setMensagem] = React.useState("Bem vindo de volta!");
 
     return(
+        <>
+        {isLoggedIn ? (
+            <Stack spacing ={2} sx={{minHeight:"800px"}}style={{border:"2px solid black", margin:"150px", marginTop: "50px", boxShadow: "0px 0px 50px black"}}>
+            <Header acesso="Agente de viagens" mensagem={mensagem}/>
 
-        <Stack spacing ={2} sx={{minHeight:"800px"}}style={{border:"2px solid black", margin:"150px", marginTop: "50px", boxShadow: "0px 0px 50px black"}}>
-        <Header acesso="Agente de viagens" mensagem={mensagem}/>
+            <Grid container spacing={0}>
+                <Grid xs={3}>
+                    <Stack spacing={2} style ={{padding:"10px", marginBottom:"10px"}}>
+                    <Buttons sMensagem={setMensagem} 
+                        sClientes={setShowClientes} 
+                        sVendas={setShowVendas} 
+                        sDestinos={setShowDestinos} 
+                        sDashboard={setShwoDashBoard} 
+                        sConsultaVendas ={setShowConsultaVendas} 
+                        sConsultaClientes = {setShowConsultaClientes} 
+                        sConsultaDestinos = {setShowConsultaDestinos}
+                        sInteresses = {setShowInteresses}
+                        sConsultaInteresses = {setShowConsultaInteresses}/>
 
-        <Grid container spacing={0}>
-            <Grid xs={3}>
-                <Stack spacing={2} style ={{padding:"10px", marginBottom:"10px"}}>
-                <Buttons sMensagem={setMensagem} 
-                    sClientes={setShowClientes} 
-                    sVendas={setShowVendas} 
-                    sDestinos={setShowDestinos} 
-                    sDashboard={setShwoDashBoard} 
-                    sConsultaVendas ={setShowConsultaVendas} 
-                    sConsultaClientes = {setShowConsultaClientes} 
-                    sConsultaDestinos = {setShowConsultaDestinos}
-                    sInteresses = {setShowInteresses}
-                    sConsultaInteresses = {setShowConsultaInteresses}/>
+                    </Stack>
+                </Grid>
+                <Grid xs={9}>
 
-                </Stack>
+                {showDashBoard && <DashBoard />}
+                {showVendas && <CadastrarVendas />}
+                {showClientes && <CadastrarClientes />}
+                {showDestinos && <CadastrarDestinos />}
+                {showConsultaVendas && <ConsultarVendas />}
+                {showConsultaDestinos && <ConsultarDestinos />}
+                {showConsultaClientes && <ConsultarClientes />}
+                {showInteresses && <CadastrarInteresses />}
+                {showConsultaInteresses && <ConsultarInteresses /> }
+
+                </Grid>
             </Grid>
-            <Grid xs={9}>
-                
-            {showDashBoard && <DashBoard />}
-            {showVendas && <CadastrarVendas />}
-            {showClientes && <CadastrarClientes />}
-            {showDestinos && <CadastrarDestinos />}
-            {showConsultaVendas && <ConsultarVendas />}
-            {showConsultaDestinos && <ConsultarDestinos />}
-            {showConsultaClientes && <ConsultarClientes />}
-            {showInteresses && <CadastrarInteresses />}
-            {showConsultaInteresses && <ConsultarInteresses />}
-
-        </Grid>
-        </Grid>
-      
-        </Stack>
+        
+            </Stack> ) : (<Login onLogin={handleLogin} />)}
+        </>
     );
 }
 

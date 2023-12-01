@@ -9,7 +9,12 @@ function ConsultarClientes(props){
     const [clientes, setClientes] = React.useState([]);
 
     React.useEffect(()=> {
-        const res = axios.get("/clientes");
+        const token = localStorage.getItem("token");
+		const res = axios.get("/clientes", {
+			headers: {
+				Authorization: `bearer ${token}`,
+			},
+		});
         res.then((query) => {
             setClientes(query.data);
             console.log(query.data);

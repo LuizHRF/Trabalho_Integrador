@@ -8,12 +8,11 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-
+import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import GridVendas from './GridVendas';
-
+import Stack from '@mui/material/Stack';
 
 
 function Row(props) {
@@ -33,17 +32,34 @@ function Row(props) {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row" align='left'>
-          {row.num_orcamento}
+          {row.id}
         </TableCell>
-        <TableCell align="left">{row.cliente_nome}</TableCell>
-        <TableCell align="left">{row.destino}</TableCell>
-        <TableCell align="left">{row.dt_venda}</TableCell>
+        <TableCell align="left">{row.nome}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }} style={{padding:"20px"}}>
-                <GridVendas row={row} />
+              <Typography variant="h5" gutterBottom component="div">
+                Informações
+              </Typography>
+                <Stack spacing={2}>
+                    <Typography variant="h6" gutterBottom component="div">
+                    {row.pais}
+                    </Typography>
+                    <Box>
+                        <Typography variant="h6" gutterBottom component="div">
+                            Descrição:
+                        </Typography>
+                            {row.descricao}
+                    </Box>
+                    <Box style={{margin:"1px solid black"}}>
+                        <Typography variant="h6" gutterBottom component="div">
+                            Documentos Obrigatórios:
+                        </Typography>
+                            {row.doc_obrigatorio}
+                    </Box>
+                </Stack>
             </Box>
           </Collapse>
         </TableCell>
@@ -54,7 +70,7 @@ function Row(props) {
 
 
 
-export default function CollapsibleTableVendas(props) {
+export default function CollapsibleTableDestinos(props) {
 
   return (
     <TableContainer component={Paper}>
@@ -63,9 +79,7 @@ export default function CollapsibleTableVendas(props) {
           <TableRow>
             <TableCell />
             <TableCell align='left'>ID</TableCell>
-            <TableCell align="left">Cliente</TableCell>
-            <TableCell align="left">Destino</TableCell>
-            <TableCell align="left">Data de interesse</TableCell>
+            <TableCell align="left">Nome</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

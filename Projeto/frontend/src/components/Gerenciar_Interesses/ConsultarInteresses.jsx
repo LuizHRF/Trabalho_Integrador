@@ -7,7 +7,12 @@ function ConsultarInteresses(props){
     const [interesses, setInteresses] = React.useState([]);
 
     React.useEffect(()=> {
-        const res = axios.get("/interesses");
+        const token = localStorage.getItem("token");
+		const res = axios.get("/interesses", {
+			headers: {
+				Authorization: `bearer ${token}`,
+			},
+		});
         res.then((query) => {
             setInteresses(query.data);
             console.log(query.data);
