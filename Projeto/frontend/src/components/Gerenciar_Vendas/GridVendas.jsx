@@ -21,7 +21,7 @@ export default function GridVendas(props){
             </Grid>
             <Grid xs={6}>
                 <Typography variant="h6" gutterBottom style={estilo}component="div">
-                    Operadora:: {props.row.operadora}
+                    Operadora: {props.row.operadora}
                 </Typography>
             </Grid>
 
@@ -32,7 +32,7 @@ export default function GridVendas(props){
             </Grid>
             <Grid xs={5}>
                 <Typography variant="h6" gutterBottom style={estilo}component="div">
-                    Data de vnda: {props.row.dt_venda}
+                    Data de venda: {props.row.dt_venda}
                 </Typography>
             </Grid>
             <Grid xs={2}>

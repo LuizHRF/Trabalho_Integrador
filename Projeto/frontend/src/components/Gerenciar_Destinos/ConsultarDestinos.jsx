@@ -7,12 +7,13 @@ function ConsultarDestinos(props){
 
     const [destinos, setDestinos] = React.useState([]);
 
-    React.useEffect(()=> {
-        getDestinos();
+    React.useEffect(()=> {  
+        //getDestinos();
     }, []);
 
-    async function getDestinos(){
+    React.useEffect(()=> {
         const token = localStorage.getItem("token");
+        console.log(token);
 		const res = axios.get("/destinos", {
 			headers: {
 				Authorization: `bearer ${token}`,
@@ -22,6 +23,23 @@ function ConsultarDestinos(props){
             setDestinos(query.data);
             console.log(query.data);
         })
+    }, []);
+
+    async function getDestinos(){
+        try{
+            const token = localStorage.getItem("token");
+            const res = axios.get("/destinos", {
+                headers: {
+                    Authorization: `bearer ${token}`,
+                },
+            });
+            
+            setDestinos(res.data);
+            console.log(res.data);
+        } catch (error) {
+            setDestinos([]);
+        }   
+    
     }
 
     return(

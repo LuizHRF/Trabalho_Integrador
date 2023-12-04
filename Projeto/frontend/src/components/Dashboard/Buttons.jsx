@@ -291,6 +291,15 @@ export default function Buttons(props){
         <PositionedMenuDestinos/>
         
         <PositionedMenuInteresses/>
+
+        <Button sx={Psx} style={estiloBotao} onClick = {() => {
+            desactivate(); 
+            props.logOut();
+            novamensagem("Bem vindo de volta!");
+
+            }} 
+            variant="contained">Logout
+        </Button>
         
 
         </>

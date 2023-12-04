@@ -78,9 +78,10 @@ passport.use(
 		},
 		async (payload, done) => {
 			try {
+				console.log(payload);
 				const user = await db.oneOrNone(
-					"SELECT a.cpf, i.password, i.nivel_acesso FROM agente a NATURAL JOIN agente_info i WHERE a.cpf = $1;"
-					[payload.cpf],
+					`SELECT a.cpf, i.password, i.nivel_acesso FROM agente a NATURAL JOIN agente_info i WHERE a.cpf = ${payload.cpf};`
+					// [payload.cpf],
 				);
 
 				if (user) {
@@ -194,7 +195,7 @@ app.post("/newInteresse", requireJWTAuth, async (req, res) => {
 app.get("/vendas", requireJWTAuth, async (req, res) =>{
 
     try{
-        const vendas = await db.any("SELECT v.*, a.nome as ag_nome, d.nome, c.nome FROM venda v JOIN agente a ON v.ag_vendedor = a.cpf JOIN destino d ON d.id = v.destino JOIN cliente c ON v.cliente = c.cpf;");
+        const vendas = await db.any("SELECT v.*, v.dt_embarque::VARCHAR(11), v.dt_venda::VARCHAR(11), a.nome as ag_nome, d.nome, c.nome as cli_nome FROM venda v JOIN agente a ON v.ag_vendedor = a.cpf JOIN destino d ON d.id = v.destino JOIN cliente c ON v.cliente = c.cpf;");
         console.log('Retornando todas as vendas');
         res.json(vendas).status(200);
     } catch(error){
@@ -215,7 +216,7 @@ app.get("/clientes", requireJWTAuth, async (req, res) =>{
     }
 })
 
-app.get("/destinos", requireJWTAuth, async (req, res) =>{
+app.get("/destinos",requireJWTAuth, async (req, res) =>{
 
     try{
         const destinos = await db.any("SELECT * FROM destino;");
@@ -230,7 +231,7 @@ app.get("/destinos", requireJWTAuth, async (req, res) =>{
 
 app.get("/interesses", requireJWTAuth, async (req, res) =>{
     try{
-        const interesses = await db.any("SELECT i.id, i.cliente_nome, i.data_interesse, i.contato, i.qtd_passageiros, d.nome as destino FROM interesse i JOIN destino d ON i.destino = d.id;");
+        const interesses = await db.any("SELECT i.id, i.cliente_nome, i.data_interesse::VARCHAR(11), i.contato, i.qtd_passageiros, d.nome as destino FROM interesse i JOIN destino d ON i.destino = d.id;");
         console.log('Retornando todas os interesses');
         res.json(interesses).status(200);
     } catch(error){

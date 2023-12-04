@@ -41,6 +41,7 @@ function TemplatePagina(props){
         // Clear the token from localStorage
         localStorage.removeItem("token");
         setIsLoggedIn(false);
+        axios.post("\logout", {});
     };
 
     const [showDashBoard, setShwoDashBoard] = React.useState(true);
@@ -78,7 +79,8 @@ function TemplatePagina(props){
                         sConsultaClientes = {setShowConsultaClientes} 
                         sConsultaDestinos = {setShowConsultaDestinos}
                         sInteresses = {setShowInteresses}
-                        sConsultaInteresses = {setShowConsultaInteresses}/>
+                        sConsultaInteresses = {setShowConsultaInteresses}
+                        logOut = {handleLogout} />
 
                     </Stack>
                 </Grid>

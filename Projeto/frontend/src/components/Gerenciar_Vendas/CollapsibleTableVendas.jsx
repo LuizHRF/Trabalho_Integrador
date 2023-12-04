@@ -13,12 +13,20 @@ import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import GridVendas from './GridVendas';
-
+import GridVendasAlteracao from './GridVendasAlteracao';
+import { Button } from '@mui/material';
 
 
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
+  const [alteracao, setAlteracao] = React.useState(false);
+
+
+
+  function alter(){
+    setAlteracao(!alteracao);
+  };
 
   return (
     <React.Fragment>
@@ -35,7 +43,7 @@ function Row(props) {
         <TableCell component="th" scope="row" align='left'>
           {row.num_orcamento}
         </TableCell>
-        <TableCell align="left">{row.cliente_nome}</TableCell>
+        <TableCell align="left">{row.cli_nome}</TableCell>
         <TableCell align="left">{row.destino}</TableCell>
         <TableCell align="left">{row.dt_venda}</TableCell>
       </TableRow>
@@ -43,8 +51,10 @@ function Row(props) {
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }} style={{padding:"20px"}}>
-                <GridVendas row={row} />
+                {!alteracao ? (<GridVendas row={row} />) : (<GridVendasAlteracao rows={row}/>)}
+              <Button onClick={alter}>ALTERAR INFORMAÇÕES</Button>
             </Box>
+  
           </Collapse>
         </TableCell>
       </TableRow>
@@ -65,7 +75,7 @@ export default function CollapsibleTableVendas(props) {
             <TableCell align='left'>ID</TableCell>
             <TableCell align="left">Cliente</TableCell>
             <TableCell align="left">Destino</TableCell>
-            <TableCell align="left">Data de interesse</TableCell>
+            <TableCell align="left">Data de venda</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

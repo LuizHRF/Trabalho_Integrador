@@ -11,7 +11,12 @@ export default function SelectDestino(props) {
   const [destNome, setDestnome] = React.useState([]);
 
   React.useEffect(()=> {
-    const res = axios.get("/destinos");
+    const token = localStorage.getItem("token");
+    const res = axios.get("/destinos", {
+      headers: {
+        Authorization: `bearer ${token}`,
+      },
+    });
     res.then((query) => {
         setDestinos(query.data);
         console.log(query.data);
