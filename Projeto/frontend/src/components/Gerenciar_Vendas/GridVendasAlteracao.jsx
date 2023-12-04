@@ -4,12 +4,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Box from '@mui/material/Box';
 
 import TextField from '@mui/material/TextField';
-
-const estilo = {
-    border:"1px solid lightGrey",
-    borderRadius:"5px",
-    padding:"10px",
-}
+import { Button } from "@mui/material";
 
 export default function GridVendas(props){
 
@@ -60,6 +55,11 @@ export default function GridVendas(props){
             <Grid xs={9}>
                 Observações:
                 <TextField fullWidth size="small" label={props.rows.observacoes} variant="outlined" />
+            </Grid>
+
+            <Grid xs={9}>
+                <Button variant="contained" style={props.estilo} >Cancelar</Button>
+                <Button variant="contained" style={props.estilo} >Enviar</Button>
             </Grid>
             
 

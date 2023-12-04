@@ -8,16 +8,21 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import Stack from '@mui/material/Stack';
+import StackInteresse from './StackInteresse';
+import StackInteresseAlteracao from './StackInteresseAlteracao';
 
 
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
+  const [alteracao, setAlteracao] = React.useState(false);
+
+  function alter(){
+    setAlteracao(!alteracao);
+  };
 
   return (
     <React.Fragment>
@@ -42,16 +47,8 @@ function Row(props) {
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }} style={{padding:"20px"}}>
-                <Stack spacing={2}>
-                  <Typography variant="h6" gutterBottom component="div">
-                    Contato:
-                  </Typography>
-                  {row.contato}
-                  <Typography variant="h6" gutterBottom component="div">
-                    Quantidade de passageiros:
-                  </Typography>
-                  {row.qtd_passageiros}
-                </Stack>
+                {alteracao ? (<StackInteresse row={row} />) : (<StackInteresseAlteracao row={row}/>) }
+                
             </Box>
           </Collapse>
         </TableCell>

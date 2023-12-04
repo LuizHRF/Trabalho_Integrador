@@ -17,12 +17,25 @@ import GridVendasAlteracao from './GridVendasAlteracao';
 import { Button } from '@mui/material';
 
 
+
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
   const [alteracao, setAlteracao] = React.useState(false);
 
+  const estilo = {
+    border:"1px solid lightGrey",
+    borderRadius:"5px",
+    padding:"10px",
+  }
 
+  const estiloBotao = {
+    border:"1px solid Grey",
+    borderRadius:"5px",
+    padding:"10px",
+    backgroundColor: "Lightblue",
+    color:"black",
+  }
 
   function alter(){
     setAlteracao(!alteracao);
@@ -51,8 +64,9 @@ function Row(props) {
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }} style={{padding:"20px"}}>
-                {!alteracao ? (<GridVendas row={row} />) : (<GridVendasAlteracao rows={row}/>)}
-              <Button onClick={alter}>ALTERAR INFORMAÇÕES</Button>
+                {!alteracao ? (<GridVendas row={row} estilo={estilo}/>) : (<GridVendasAlteracao rows={row} estilo={estiloBotao}/>)}
+              <Button variant="contained" style={estiloBotao} onClick={alter}>ALTERAR INFORMAÇÕES</Button>
+              <Button variant="contained" style={estiloBotao}>EXCLUIR VENDA</Button>
             </Box>
   
           </Collapse>
