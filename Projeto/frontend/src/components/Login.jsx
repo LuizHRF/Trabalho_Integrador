@@ -10,6 +10,7 @@ import {
 	Stack,
 	TextField,
 } from "@mui/material";
+import Background from "./background";
 
 export default function Login(props) {
 	const [username, setUsername] = React.useState("");
@@ -62,8 +63,10 @@ export default function Login(props) {
 	}
 
 	return (
-		<Box style={{maxWidth: '300px'}}>
-			<Stack spacing={2}>
+		<Box style={{}}>
+		{/*<Background />*/}
+		<Box style={{width:"25%", margin: 'auto', marginTop: "200px"}}>
+			<Stack spacing={2} style={{}}>
 				<Stack spacing={2}>
 					<TextField
 						required
@@ -125,6 +128,7 @@ export default function Login(props) {
 				</Snackbar>
 			</Stack>
 		</Box>
+	</Box>
 	);
 }
 
