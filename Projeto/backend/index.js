@@ -239,3 +239,15 @@ app.get("/interesses", requireJWTAuth, async (req, res) =>{
         res.sendStatus(400);
     }
 })
+
+app.get("/Relatorio_agente_e_data", requireJWTAuth, async (req, res) =>{
+    try{
+        const relatorio = await db.any("SELECT a.nome, i.salario, i.comissao, v.* FROM agente a NATURAL JOIN agente_info i JOIN venda v ON v.ag_vendedor=a.cpf;");
+        console.log('Retornando todas os relatorio de agente');
+        res.json(relatorio).status(200);
+    } catch(error){
+        console.log(error);
+        res.sendStatus(400);
+    }
+})
+

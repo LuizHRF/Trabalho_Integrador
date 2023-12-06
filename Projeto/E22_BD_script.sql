@@ -16,11 +16,7 @@ CREATE TABLE IF NOT EXISTS agente_info(
     ultima_modif DATE NOT NULL DEFAULT CURRENT_DATE,
     nivel_acesso INTEGER NOT NULL,
     cpf BIGINT NOT NULL,
-<<<<<<< HEAD
     password VARCHAR(100),
-=======
-    password VARCHAR(50),
->>>>>>> aa98df5c077e77e01f377091d7582ca5d94f5310
     CONSTRAINT pk_info PRIMARY KEY (ultima_modif, cpf),
     CONSTRAINT fk_info_agente FOREIGN KEY (cpf) REFERENCES agente(cpf)
 );
