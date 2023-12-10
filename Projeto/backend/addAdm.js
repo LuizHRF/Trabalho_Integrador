@@ -15,7 +15,6 @@ const salario  = "0";
 const acesso  = 1;
 const password = "embarque22"
 
-
 const salt = bcrypt.genSaltSync(10);
 const hashedPasswd = bcrypt.hashSync(password, salt);
 
@@ -24,6 +23,7 @@ db.none("INSERT INTO agente (nome, cpf, dtnasc) VALUES ($1, $2, $3);", [
 	cpf,
     dtnasc,
 ]);
+
 
 db.none("INSERT INTO agente_info (comissao, ender, salario, nivel_acesso, password, cpf) VALUES ($1, $2, $3, $4, $5, $6);", [
 	comissao,

@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS agente(
 -- INSERT INTO agente(nome, cpf, dtnasc) VALUES ('Gabrielli', 987654321, '01-01-2001');
 
 CREATE TABLE IF NOT EXISTS agente_info(
-    ferias_disp INTEGER DEfaULT 0,
+    ferias_disp INTEGER DEFAULT 0,
     comissao VARCHAR(100),
     ender VARCHAR(100) NOT NULL,
     salario NUMERIC NOT NULL,

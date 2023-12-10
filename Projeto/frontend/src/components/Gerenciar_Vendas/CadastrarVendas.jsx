@@ -8,10 +8,94 @@ import { Typography } from "@mui/material";
 import Button from '@mui/material/Button';
 import SelectDestino from "./SelectDestino";
 
-function CadastrarVendas(){
+export default function CadastrarVendas(){
 
-    const [cliente, setCliente] = React.useState();
-    const [destino, setDestino] = React.useState();
+    const [cliente, setCliente] = React.useState("");
+    const [ag_vendedor, setAg_vendedor] = React.useState("");
+    const [destino, setDestino] = React.useState("");
+    const [hotel, setHotel] = React.useState("");
+    const [num_orcamento, setNum_orcamento] = React.useState("");
+    const [operadora, setOperadora] = React.useState("");
+    const [num_noites, setNum_noites] = React.useState("");
+    const [dt_embarque, setDt_embarque] = React.useState("");
+    const [dt_venda, setDt_venda] = React.useState("");
+    const [observacoes, setObservacoes] = React.useState("");
+    const [v_taxas, setV_taxas] = React.useState("");
+    const [v_over, setV_over] = React.useState("");
+    const [v_tarifa, setV_tarifa] = React.useState("");
+
+
+    const [openMessage, setOpenMessage] = React.useState(false);
+    const [messageText, setMessageText] = React.useState("");
+    const [messageSeverity, setMessageSeverity] = React.useState("success");
+
+
+    function clearForm() {
+        setCliente("");
+        setAg_vendedor("");
+        setDestino("");
+        setHotel("");
+        setNum_orcamento("");
+        setOperadora("");
+        setNum_noites("");
+        setObservacoes("");
+        setV_over("");
+        setV_tarifa("");
+        setV_taxas("");
+        setDt_embarque("");
+        setDt_venda("");
+    }
+
+    function handleCancelClick() {
+        if (cliente !== "" || ag_vendedor !== "" || destino !== "" || hotel !== "" || num_orcamento !== "" || operadora !== "" || num_noites !== "" || dt_embarque !== "" || dt_venda !== "" || observacoes !== "" || v_over !== "" || v_tarifa !== "" || v_taxas) {
+            setMessageText("Cadastro de venda cancelado!");
+            setMessageSeverity("warning");
+            setOpenMessage(true);
+        }
+        clearForm();
+    }
+
+    async function handleSubmit() {
+        if (cliente !== "" && ag_vendedor !== "" && destino !== "" && hotel !== "" && num_orcamento !== "" && operadora !== "" && num_noites !== "" && dt_embarque !== "" && dt_venda !== "" && observacoes !== "" && v_over !== "" && v_tarifa !== "" && v_taxas) {
+            try {
+                await axios.post("/newVenda", {
+                    cliente : cliente, 
+                    ag_vendedor : ag_vendedor, 
+                    destino : destino,
+                    hotel : hotel,
+                    num_orcamento : num_orcamento, 
+                    operadora : operadora, 
+                    num_noites : num_noites, 
+                    observacoes : observacoes, 
+                    v_over : v_over, 
+                    v_tarifa : v_tarifa, 
+                    v_taxas : v_taxas, 
+                    dt_embarque : dt_embarque, 
+                    dt_venda : dt_venda
+                });
+                setMessageText("Venda cadastrada com sucesso!");
+                setMessageSeverity("success");
+                clearForm(); // limpa o formulário apenas se cadastrado com sucesso
+            } catch (error) {
+                console.log(error);
+                setMessageText("Falha no cadastro da venda!");
+                setMessageSeverity("error");
+            } finally {
+                setOpenMessage(true);
+            }
+        } else {
+            setMessageText("Dados de venda inválidos!");
+            setMessageSeverity("warning");
+            setOpenMessage(true);
+        }
+    }
+
+    function handleCloseMessage(_, reason) {
+        if (reason === "clickaway") {
+            return;
+        }
+        setOpenMessage(false);
+    } 
 
 
     return(
@@ -19,35 +103,49 @@ function CadastrarVendas(){
         <Grid container spacing={2} style={{margin:"10px", border:"1px solid lightGrey"}}>
             <Grid xs={6}>
                 Cliente:
-                {destino}
+                <SelectDestino setCliente = {setCliente} onChange={(e) => setCliente(e.target.value)} value={cliente}/>
             </Grid>
             <Grid xs={6}>
                 Destino:
-                <SelectDestino setDestino={setDestino}/>
+                <SelectDestino setDestino={setDestino} onChange={(e) => setDestino(e.target.value)} value={destino}/>
             </Grid>
 
+            <Grid xs={6}>
+                Agente:  
+                <SelectAgente setAgente = {setAg_vendedor} onChange={(e) => setAg_vendedor(e.target.value)} value={ag_vendedor}/>
+            </Grid>
+            <Grid xs={6}>
+                Data da emissão:
+                <TextField fullWidth size="small" label="Data da emissão" variant="outlined" onChange={(e) => setDt_venda(e.target.value)} value={dt_venda}/>
+            </Grid>
+        
 
             <Grid xs={4}>
                 Número de noites:
-                <TextField fullWidth size="small" label="Nº de noites" variant="outlined" /> {/*É possível adicionar o prop ID nos textFields*/}
+                <TextField fullWidth size="small" label="Nº de noites" variant="outlined" onChange={(e) => setNum_noites(e.target.value)} value={num_noites}/> {/*É possível adicionar o prop ID nos textFields*/}
             </Grid>
             <Grid xs={4}>
                 Número do orçamento:
-                <TextField fullWidth size="small" label="Nº do orçamento" variant="outlined" />
+                <TextField fullWidth size="small" label="Nº do orçamento" variant="outlined" onChange={(e) => setNum_orcamento(e.target.value)} value={num_orcamento}/>
             </Grid>
             <Grid xs={4}>
                 Data de embarque:
-                <TextField fullWidth size="small" label="Data de embarque" variant="outlined" />
+                <TextField fullWidth size="small" label="Data de embarque" variant="outlined" onChange={(e) => setDt_embarque(e.target.value)} value={dt_embarque}/>
             </Grid>
 
             
             <Grid xs={6}>
                 Hotel: 
-                <TextField fullWidth size="small" label="Hotel" variant="outlined" />
+                <TextField fullWidth size="small" label="Hotel" variant="outlined" onChange={(e) => setHotel(e.target.value)} value={hotel}/>
             </Grid>
             <Grid xs={6}>
                 Operadora:  
-                <TextField fullWidth size="small" label="Operadora" variant="outlined" />
+                <TextField fullWidth size="small" label="Operadora" variant="outlined" onChange={(e) => setOperadora(e.target.value)} value={operadora}/>
+            </Grid>
+
+            <Grid xs={6}>
+                Observações:  
+                <TextField fullWidth size="small" label="Observacoes" variant="outlined" onChange={(e) => setObservacoes(e.target.value)} value={observacoes}/>
             </Grid>
             
 
@@ -57,41 +155,38 @@ function CadastrarVendas(){
 
             <Grid xs={4}>
                 Valor da tarifa:
-                <TextField fullWidth size="small" variant="outlined" InputProps={{ startAdornment: <InputAdornment position="start">R$</InputAdornment>}} />
+                <TextField fullWidth size="small" variant="outlined" InputProps={{ startAdornment: <InputAdornment position="start">R$</InputAdornment>}} onChange={(e) => setDt_venda(e.target.value)} value={dt_venda}/>
             </Grid>
             <Grid xs={4}>
                 Valor da taxa:
-                <TextField fullWidth size="small" variant="outlined" InputProps={{ startAdornment: <InputAdornment position="start">R$</InputAdornment>}} />
+                <TextField fullWidth size="small" variant="outlined" InputProps={{ startAdornment: <InputAdornment position="start">R$</InputAdornment>}} onChange={(e) => setDt_venda(e.target.value)} value={dt_venda}/>
             </Grid>
             <Grid xs={4}>
                 Valor do Over:
-                <TextField fullWidth size="small" variant="outlined" InputProps={{ startAdornment: <InputAdornment position="start">R$</InputAdornment>}} />
+                <TextField fullWidth size="small" variant="outlined" InputProps={{ startAdornment: <InputAdornment position="start">R$</InputAdornment>}} onChange={(e) => setDt_venda(e.target.value)} value={dt_venda}/>
             </Grid>
 
-            <Grid xs={6}>
-                Data da emissão:
-                <TextField fullWidth size="small" label="Data da emissão" variant="outlined" />
-            </Grid>
-            <Grid xs={6}>
-                Comissão:  
-                <TextField fullWidth size="small" variant="outlined" InputProps={{ startAdornment: <InputAdornment position="start">R$</InputAdornment>}} />
-            </Grid>
 
             <Grid xs={12}>
                 <Typography>
-                    Valor final: R$XXX,00
+                    Valor final: R$ {v_over + v_tarifa + v_taxas}
                 </Typography>
             </Grid>
 
             <Grid xs={12}>
-                <Button variant="contained">Cadastrar</Button>
-                <Button style={{marginLeft: "10px"}}variant="contained">Limpar</Button>
+                <Button variant="contained" onClick={handleSubmit}>Cadastrar</Button>
+                <Button style={{marginLeft: "10px"}}variant="contained" onClick={handleCancelClick}>Limpar</Button>
             </Grid>
 
         </Grid>
+
+        <Snackbar open={openMessage} autoHideDuration={6000} onClose={handleCloseMessage}>
+            <Alert severity={messageSeverity} onClose={handleCloseMessage}>
+                {messageText}
+            </Alert>
+        </Snackbar>
+
     </Box>
         
     );
 }
-
-export default CadastrarVendas;

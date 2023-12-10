@@ -5,7 +5,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-// const { Strategy, ExtractJwt } = require("passport-jwt");
+const { Strategy, ExtractJwt } = require("passport-jwt");
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 
@@ -142,56 +142,6 @@ app.post("/logout", function (req, res, next) {
 	});
 });
 
-app.post("/newVenda", requireJWTAuth,  (req, res) => {
-    
-    const aNome = req.body.nome;
-    const aCpf = req.body.cpf;
-    const aDtnasc = req.body.dtnasc;
-
-    db.none(
-        "INSERT INTO agente(nome, cpf, dtnasc) VALUES ($1, $2, $3);",
-        [aNome, aCpf, aDtnasc]
-    )
-
-    res.sendStatus(200);
-})
-
-app.post("/newCliente", requireJWTAuth,  (req, res) => {
-
-})
-
-app.post("/newDestino", requireJWTAuth, (req, res) => {
-
-})
-
-app.post("/newAgente", requireJWTAuth, (req, res) => {
-
-    const aNome = req.body.nome;
-    const aCpf = req.body.cpf;
-    const aDtnasc = req.body.dtnasc;
-    const aFerias = req.body.ferias;
-    const aEnder = req.body.ender;
-    const aComissao = req.body.comissao;
-    const aSalario = req.body.salario;
-    const aAcesso = req.body.acesso;
-
-    db.none(
-        "INSERT INTO agente(nome, cpf, dtnasc) VALUES ($1, $2, $3);",
-        [aNome, aCpf, aDtnasc]
-    )
-
-    db.none(
-        "INSERT INTO agente_info(ferias_disp, comissao, ender, salario, ultima_modif, nivel_acesso, cpf) VALUES ($1, $2, $3, $4, NOW(), $5, %6);",
-        [aFerias, aComissao, aEnder, aSalario, aAcesso, aCpf]
-    )
-
-    res.sendStatus(200);
-})
-
-app.post("/newInteresse", requireJWTAuth, async (req, res) => {
-
-})
-
 app.get("/vendas", requireJWTAuth, async (req, res) =>{
 
     try{
@@ -210,6 +160,17 @@ app.get("/clientes", requireJWTAuth, async (req, res) =>{
         const clientes = await db.any("SELECT * FROM cliente;");
         console.log('Retornando todas os clientes');
         res.json(clientes).status(200);
+    } catch(error){
+        console.log(error);
+        res.sendStatus(400);
+    }
+})
+
+app.get("/agentes", requireJWTAuth, async (req, res) =>{
+    try{
+        const agentes = await db.any("SELECT * FROM agente;");
+        console.log('Retornando todos os agentes');
+        res.json(agentes).status(200);
     } catch(error){
         console.log(error);
         res.sendStatus(400);
@@ -251,3 +212,73 @@ app.get("/Relatorio_agente_e_data", requireJWTAuth, async (req, res) =>{
     }
 })
 
+app.post("/newAgente", requireJWTAuth, (req, res) => {
+
+    const aNome = req.body.nome;
+    const aCpf = req.body.cpf;
+    const aDtnasc = req.body.dtnasc;
+    const aFerias = req.body.ferias;
+    const aEnder = req.body.ender;
+    const aComissao = req.body.comissao;
+    const aSalario = req.body.salario;
+    const aAcesso = req.body.acesso;
+
+    db.none(
+        "INSERT INTO agente(nome, cpf, dtnasc) VALUES ($1, $2, $3);",
+        [aNome, aCpf, aDtnasc]
+    )
+
+    db.none(
+        "INSERT INTO agente_info(ferias_disp, comissao, ender, salario, ultima_modif, nivel_acesso, cpf) VALUES ($1, $2, $3, $4, NOW(), $5, %6);",
+        [aFerias, aComissao, aEnder, aSalario, aAcesso, aCpf]
+    )
+
+    res.sendStatus(200);
+})
+
+
+app.post("/newVenda", requireJWTAuth, async (req, res) => {
+    try {
+        const vCliente = req.body.cliente;
+        const vAg_vendedor = req.body.ag_vendedor;
+		const vDestino = req.body.destino;
+		const vHotel = req.body.hotel;
+		const vV_taxas = req.body.v_taxas;
+		const vV_over = req.body.v_over;
+		const vV_tarifa = req.body.v_tarifa;
+		const vDt_embarque = req.body.dt_embarque;
+		const vDt_venda = req.body.cliente;
+		const vObservacoes = req.body.observacoes;
+		const vOperadora = req.body.operadora;
+		const vNum_noites = req.body.num_noites;
+		const vNum_orcamento = req.body.num_orcamento;
+
+        db.none(
+            "INSERT INTO venda (cliente, ag_vendedor, destino, hotel, v_taxas, v_over, v_tarifa, dt_embarque, dt_venda, observacoes, operadora, num_noites, num_orcamento) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);",
+            [vCliente, vAg_vendedor, vDestino, vHotel, vV_taxas, vV_over, vV_tarifa, vDt_embarque, vDt_venda, vObservacoes, vOperadora, vNum_noites, vNum_orcamento]
+        );
+        res.sendStatus(200);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+});
+
+app.post("/newInteresse", requireJWTAuth, async (req, res) => {
+    try {
+        const iCliente_nome = req.body.cliente_nome;
+        const iContato = req.body.contato;
+		const iDestino = req.body.destino;
+		const iData_interesse = req.body.data_interesse;
+		const iQtd_passageiros = req.body.qtd_passageiros;
+
+        db.none(
+            "INSERT INTO interesse (cliente_nome, contato, destino, data_interesse, qtd_passageiros) VALUES ($1, $2, $3, $4, $5);",
+            [iCliente_nome, iContato, iDestino, iData_interesse, iQtd_passageiros]
+        );
+        res.sendStatus(200);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+});

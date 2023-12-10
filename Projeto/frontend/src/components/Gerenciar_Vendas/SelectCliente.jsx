@@ -4,28 +4,42 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import axios from "axios";
 
-export default function SelectCliente() {
-  const [age, setAge] = React.useState('');
+export default function SelectCliente(props) {
+  const [clientes, setClientes] = React.useState([]);
+  const [clienteNome, setClienteNome] = React.useState([]);
+
+  React.useEffect(()=> {
+    const token = localStorage.getItem("token");
+    const res = axios.get("/clientes", {
+      headers: {
+        Authorization: `bearer ${token}`,
+      },
+    });
+    res.then((query) => {
+        setClientes(query.data);
+        console.log(query.data);
+    })
+  }, [])
 
   const handleChange = (event) => {
-    setAge(event.target.value);
+    props.setClientes(event.target.value);
+    setClienteNome(event.target.nome);
   };
 
   return (
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Age</InputLabel>
+        <InputLabel id="demo-simple-select-label">Cliente</InputLabel>
         <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={age}
-          label="Age"
+          value={clienteNome}
+          label="Cliente"
           onChange={handleChange}
         >
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
+          {clientes.map((c) => {
+               return <MenuItem value={c.cpf} name={c.nome}>{c.nome}</MenuItem>
+        })}
         </Select>
       </FormControl>
     </Box>
