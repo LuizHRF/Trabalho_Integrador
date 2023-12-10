@@ -7,6 +7,81 @@ import Button from '@mui/material/Button';
 
 
 function CadastrarClientes(){
+
+
+    const [nome, setNome] = React.useState("");
+    const [cpf, setCpf] = React.useState("");
+    const [telefone, setTelefone] = React.useState("");
+    const [dt_nasc, setDt_nasc] = React.useState("");
+    const [renda, setRenda] = React.useState("");
+    const [profissao, setProfissao] = React.useState("");
+    const [endereco, setEndereco] = React.useState("");
+    const [observacoes, setObservacoes] = React.useState("");
+
+
+    const [openMessage, setOpenMessage] = React.useState(false);
+    const [messageText, setMessageText] = React.useState("");
+    const [messageSeverity, setMessageSeverity] = React.useState("success");
+
+
+    function clearForm() {
+        setNome("");
+        setCpf("");
+        setTelefone("");
+        setDt_nasc("");
+        setRenda("");
+        setProfissao("");
+        setEndereco("");
+        setObservacoes("");
+    }
+
+    function handleCancelClick() {
+        if (nome !== "" || cpf !== "" || telefone !== "" || dt_nasc !== "" || renda !== "" || profissao !== "" || endereco !== "" || observacoes !== "") {
+            setMessageText("Cadastro de cliente cancelado!");
+            setMessageSeverity("warning");
+            setOpenMessage(true);
+        }
+        clearForm();
+    }
+
+    async function handleSubmit() {
+        if (nome !== "" && cpf !== "" && telefone !== "" && dt_nasc !== "" && renda !== "" && profissao!== "" && endereco !== "" && observacoes !== "") {
+            try {
+                await axios.post("/newCliente", {
+                    nome : nome, 
+                    cpf : cpf, 
+                    telefone : telefone,
+                    dt_nasc : dt_nasc,
+                    renda : renda,
+                    profissao : profissao, 
+                    endereco : endereco, 
+                    observacoes : observacoes
+                });
+                setMessageText("Cliente cadastrado com sucesso!");
+                setMessageSeverity("success");
+                clearForm(); // limpa o formulário apenas se cadastrado com sucesso
+            } catch (error) {
+                console.log(error);
+                setMessageText("Falha no cadastro do cliente!");
+                setMessageSeverity("error");
+            } finally {
+                setOpenMessage(true);
+            }
+        } else {
+            setMessageText("Dados de cliente inválidos!");
+            setMessageSeverity("warning");
+            setOpenMessage(true);
+        }
+    }
+
+    function handleCloseMessage(_, reason) {
+        if (reason === "clickaway") {
+            return;
+        }
+        setOpenMessage(false);
+    } 
+
+
     return(
     <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2} style={{margin:"10px", border:"1px solid lightGrey"}}>
@@ -17,80 +92,36 @@ function CadastrarClientes(){
             </Grid>
 
 
-            <Grid xs={4}>
+            <Grid xs={6}>
                 CPF:
                 <TextField fullWidth size="small" label="CPF" variant="outlined" /> {/*É possível adicionar o prop ID nos textFields*/}
             </Grid>
-            <Grid xs={4}>
-                RG:
-                <TextField fullWidth size="small" label="RG" variant="outlined" />
-            </Grid>
-            <Grid xs={4}>
+            <Grid xs={6}>
                 Data de nascimento:
                 <TextField fullWidth size="small" label="Data de nascimento" variant="outlined" />
-            </Grid>
-
-            
-            <Grid xs={9}>
-                Logradouro:
-                <TextField fullWidth size="small" label="Logradouro" variant="outlined" />
-            </Grid>
-            <Grid xs={3}>
-                CEP: 
-                <TextField fullWidth size="small" label="CEP" variant="outlined" />
-            </Grid>
-
-
-            <Grid xs={5}>
-                Bairro:
-                <TextField fullWidth size="small" label="Bairro" variant="outlined" /> {/*É possível adicionar o prop ID nos textFields*/}
-            </Grid>
-            <Grid xs={4}>
-                Cidade:
-                <TextField fullWidth size="small" label="Cidade" variant="outlined" />
-            </Grid>
-            <Grid xs={3}>
-                Estado:
-                <TextField fullWidth size="small" label="UF" variant="outlined" />
-            </Grid>
-            
-
-            <Grid xs={9}>
-                Email:
-                <TextField fullWidth size="small" label="Email" variant="outlined" />
             </Grid>
             <Grid xs={3}>
                 Telefone: 
                 <TextField fullWidth size="small" label="Telefone" variant="outlined" />
             </Grid>
 
-
-            <Grid xs={12}>
-                <Divider textAlign="left">ACOMPANHANTES</Divider>
-            </Grid>
-
+            
             <Grid xs={9}>
-                Nome do acompanhante:
-                <TextField fullWidth size="small" label="Acompanhante" variant="outlined" />
+                Endereço:
+                <TextField fullWidth size="small" label="endereco" variant="outlined" />
             </Grid>
+            
             <Grid xs={3}>
-                Data de nascimento: 
-                <TextField fullWidth size="small" label="Dt. de nascimento" variant="outlined" />
+                : 
+                <TextField fullWidth size="small" label="Telefone" variant="outlined" />
             </Grid>
 
-            <Grid xs={6}>
-               CPF do acompanhante:
-                <TextField fullWidth size="small" label="CPF" variant="outlined" />
-            </Grid>
-            <Grid xs={6}>
-                RG do acompanhante
-                <TextField fullWidth size="small" label="RG" variant="outlined" />
-            </Grid>
-        
-            <Grid xs={12}>
-                <Button variant="contained">Cadastrar</Button>
-                <Button style={{marginLeft: "10px"}}variant="contained">Limpar</Button>
-            </Grid>
+
+            <Snackbar open={openMessage} autoHideDuration={6000} onClose={handleCloseMessage}>
+                <Alert severity={messageSeverity} onClose={handleCloseMessage}>
+                    {messageText}
+                </Alert>
+            </Snackbar>
 
         </Grid>
     </Box>
