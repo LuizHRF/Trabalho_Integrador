@@ -10,9 +10,9 @@ import SelectDestino from "./SelectDestino";
 import SelectCliente from "./SelectCliente";
 
 import SelectAgente from "./SelectAgente";
-import Snackbar from '@mui/material/Snackbar';
+//import Snackbar from '@mui/material/Snackbar';
 import axios from "axios";
-import Alert from '@mui/material/Alert';
+//import Alert from '@mui/material/Alert';
 
 export default function CadastrarVendas(){
 
@@ -29,12 +29,6 @@ export default function CadastrarVendas(){
     const [v_taxas, setV_taxas] = React.useState("");
     const [v_over, setV_over] = React.useState("");
     const [v_tarifa, setV_tarifa] = React.useState("");
-
-
-    const [openMessage, setOpenMessage] = React.useState(false);
-    const [messageText, setMessageText] = React.useState("");
-    const [messageSeverity, setMessageSeverity] = React.useState("success");
-
 
     function clearForm() {
         setCliente("");
@@ -54,9 +48,7 @@ export default function CadastrarVendas(){
 
     function handleCancelClick() {
         if (cliente !== "" || ag_vendedor !== "" || destino !== "" || hotel !== "" || num_orcamento !== "" || operadora !== "" || num_noites !== "" || dt_embarque !== "" || dt_venda !== "" || observacoes !== "" || v_over !== "" || v_tarifa !== "" || v_taxas) {
-            setMessageText("Cadastro de venda cancelado!");
-            setMessageSeverity("warning");
-            setOpenMessage(true);
+            console.log("Limpado")
         }
         clearForm();
     }
@@ -88,29 +80,12 @@ export default function CadastrarVendas(){
                 }
                 console.log(novaVenda);
                 await axios.post("/newVenda", novaVenda);
-                setMessageText("Venda cadastrada com sucesso!");
-                setMessageSeverity("success");
                 clearForm(); // limpa o formulário apenas se cadastrado com sucesso
             } catch (error) {
                 console.log(error);
-                setMessageText("Falha no cadastro da venda!");
-                setMessageSeverity("error");
-            } finally {
-                setOpenMessage(true);
-            }
-        } else {
-            setMessageText("Dados de venda inválidos!");
-            setMessageSeverity("warning");
-            setOpenMessage(true);
+            } 
         }
     }
-
-    function handleCloseMessage(_, reason) {
-        if (reason === "clickaway") {
-            return;
-        }
-        setOpenMessage(false);
-    } 
 
 
     return(
@@ -122,12 +97,12 @@ export default function CadastrarVendas(){
             </Grid>
             <Grid xs={6}>
                 Destino: {destino}
-                <SelectDestino setDestino={setDestino}/>
+                <SelectDestino setDestino={setDestino} onChange={(e) => setDestino(e.target.value)} value={destino}/>
             </Grid>
 
             <Grid xs={6}>
                 Agente: {ag_vendedor}
-                <SelectAgente setAgente = {setAg_vendedor}/>
+                <SelectAgente setAgente={setAg_vendedor} />
             </Grid>
             <Grid xs={6}>
                 Data da emissão:
@@ -195,12 +170,7 @@ export default function CadastrarVendas(){
 
         </Grid>
 
-        <Snackbar open={openMessage} autoHideDuration={6000} onClose={handleCloseMessage}>
-            <Alert severity={messageSeverity} onClose={handleCloseMessage}>
-                {messageText}
-            </Alert>
-        </Snackbar>
-
+     
     </Box>
         
     );

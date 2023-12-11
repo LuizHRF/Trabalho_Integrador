@@ -6,8 +6,8 @@ const LocalStrategy = require("passport-local");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { Strategy, ExtractJwt } = require("passport-jwt");
-
 const JwtStrategy = require('passport-jwt').Strategy;
+//const ExtractJwt = require('passport-jwt').ExtractJwt;
 
 const pgp = require("pg-promise")({});
 
@@ -113,6 +113,7 @@ passport.deserializeUser(function (user, cb) {
 
 const requireJWTAuth = passport.authenticate("jwt", { session: false });
 
+
 app.listen(3010, () => console.log("Servidor rodando na porta 3010."));
 
 app.post(
@@ -129,7 +130,7 @@ app.post(
 	},
 );
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
 	res.send("Hello, world!");
 });
 
@@ -142,7 +143,7 @@ app.post("/logout", function (req, res, next) {
 	});
 });
 
-app.get("/vendas", requireJWTAuth, async (req, res) =>{
+app.get("/vendas", async (req, res) =>{
 
     try{
         const vendas = await db.any("SELECT v.*, v.dt_embarque::VARCHAR(11), v.dt_venda::VARCHAR(11), a.nome as ag_nome, d.nome, c.nome as cli_nome FROM venda v JOIN agente a ON v.ag_vendedor = a.cpf JOIN destino d ON d.id = v.destino JOIN cliente c ON v.cliente = c.cpf;");
@@ -155,7 +156,7 @@ app.get("/vendas", requireJWTAuth, async (req, res) =>{
 
 })
 
-app.get("/clientes", requireJWTAuth, async (req, res) =>{
+app.get("/clientes", async (req, res) =>{
     try{
         const clientes = await db.any("SELECT * FROM cliente;");
         console.log('Retornando todas os clientes');
@@ -166,9 +167,9 @@ app.get("/clientes", requireJWTAuth, async (req, res) =>{
     }
 })
 
-app.get("/agentes", requireJWTAuth, async (req, res) =>{
+app.get("/agentes",  async (req, res) =>{
     try{
-        const agentes = await db.any("SELECT a.nome, a.cpf, a.dtnasc::VARCHAR(11), i.ferias_disp, i.comissao, i.ender, i.salario, i.nivel_acesso, i.ultima_modif::VARCHAR(11)  FROM agente a JOIN agente_info i ON a.cpf=i.cpf;");
+        const agentes = await db.any("SELECT * FROM agente;");
         console.log('Retornando todos os agentes');
         res.json(agentes).status(200);
     } catch(error){
@@ -177,7 +178,7 @@ app.get("/agentes", requireJWTAuth, async (req, res) =>{
     }
 })
 
-app.get("/destinos",requireJWTAuth, async (req, res) =>{
+app.get("/destinos", async (req, res) =>{
 
     try{
         const destinos = await db.any("SELECT * FROM destino;");
@@ -190,7 +191,7 @@ app.get("/destinos",requireJWTAuth, async (req, res) =>{
     
 })
 
-app.get("/interesses", requireJWTAuth, async (req, res) =>{
+app.get("/interesses",  async (req, res) =>{
     try{
         const interesses = await db.any("SELECT i.id, i.cliente_nome, i.data_interesse::VARCHAR(11), i.contato, i.qtd_passageiros, d.nome as destino FROM interesse i JOIN destino d ON i.destino = d.id;");
         console.log('Retornando todas os interesses');
@@ -201,7 +202,7 @@ app.get("/interesses", requireJWTAuth, async (req, res) =>{
     }
 })
 
-app.get("/Relatorio_agente_e_data", requireJWTAuth, async (req, res) =>{
+app.get("/Relatorio_agente_e_data",  async (req, res) =>{
     try{
         const relatorio = await db.any("SELECT a.nome, i.salario, i.comissao, v.* FROM agente a NATURAL JOIN agente_info i JOIN venda v ON v.ag_vendedor=a.cpf;");
         console.log('Retornando todas os relatorio de agente');
@@ -212,7 +213,7 @@ app.get("/Relatorio_agente_e_data", requireJWTAuth, async (req, res) =>{
     }
 })
 
-app.post("/newAgente", requireJWTAuth, (req, res) => {
+app.post("/newAgente",  (req, res) => {
 
     const aNome = req.body.nome;
     const aCpf = req.body.cpf;
@@ -237,7 +238,7 @@ app.post("/newAgente", requireJWTAuth, (req, res) => {
 })
 
 
-app.post("/newVenda", requireJWTAuth, async (req, res) => {
+app.post("/newVenda",  async (req, res) => {
     try {
         const vCliente = req.body.cliente;
         const vAg_vendedor = req.body.ag_vendedor;
@@ -247,14 +248,14 @@ app.post("/newVenda", requireJWTAuth, async (req, res) => {
 		const vV_over = req.body.v_over;
 		const vV_tarifa = req.body.v_tarifa;
 		const vDt_embarque = req.body.dt_embarque;
-		const vDt_venda = req.body.dt_venda;
+		const vDt_venda = req.body.cliente;
 		const vObservacoes = req.body.observacoes;
 		const vOperadora = req.body.operadora;
 		const vNum_noites = req.body.num_noites;
 		const vNum_orcamento = req.body.num_orcamento;
 
         db.none(
-            "INSERT INTO venda (cliente, ag_vendedor, destino, hotel, v_taxas, v_over, v_tarifa, dt_embarque, dt_venda, observacoes, operadora, num_noites, num_orcamento) VALUES ($1, $2, $3, $4, $5, $6, $7, $8::Date, $9::Date, $10, $11, $12, $13);",
+            "INSERT INTO venda (cliente, ag_vendedor, destino, hotel, v_taxas, v_over, v_tarifa, dt_embarque, dt_venda, observacoes, operadora, num_noites, num_orcamento) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);",
             [vCliente, vAg_vendedor, vDestino, vHotel, vV_taxas, vV_over, vV_tarifa, vDt_embarque, vDt_venda, vObservacoes, vOperadora, vNum_noites, vNum_orcamento]
         );
         res.sendStatus(200);
@@ -264,7 +265,7 @@ app.post("/newVenda", requireJWTAuth, async (req, res) => {
     }
 });
 
-app.post("/newInteresse", requireJWTAuth, async (req, res) => {
+app.post("/newInteresse", async (req, res) => {
     try {
         const iCliente_nome = req.body.cliente_nome;
         const iContato = req.body.contato;
@@ -275,6 +276,24 @@ app.post("/newInteresse", requireJWTAuth, async (req, res) => {
         db.none(
             "INSERT INTO interesse (cliente_nome, contato, destino, data_interesse, qtd_passageiros) VALUES ($1, $2, $3, $4, $5);",
             [iCliente_nome, iContato, iDestino, iData_interesse, iQtd_passageiros]
+        );
+        res.sendStatus(200);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+});
+
+app.post("/newDestino", async (req, res) => {
+    try {
+        const dnome = req.body.nome;
+        const dpais = req.body.pais;
+		const ddocs = req.body.docs_obrigatorios;
+		const ddescr = req.body.descricao;
+
+        db.none(
+            "INSERT INTO destino (nome, pais, descricao, docs_obrigatorios) VALUES ($1, $2, $3, $4);",
+            [dnome, dpais, ddescr, ddocs]
         );
         res.sendStatus(200);
     } catch (error) {

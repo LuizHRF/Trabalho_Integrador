@@ -8,7 +8,7 @@ function ConsultarDestinos(props){
     const [destinos, setDestinos] = React.useState([]);
 
     React.useEffect(()=> {  
-        //getDestinos();
+        getDestinos();
     }, []);
 
     React.useEffect(()=> {

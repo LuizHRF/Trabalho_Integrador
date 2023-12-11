@@ -24,7 +24,7 @@ axios.defaults.headers.common["Content-Type"] =
 
 function TemplatePagina(props){
 
-    const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+    const [isLoggedIn, setIsLoggedIn] = React.useState(true);
 
 
     React.useEffect(() => {
