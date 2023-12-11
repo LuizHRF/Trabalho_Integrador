@@ -15,6 +15,8 @@ import ConsultarDestinos from "./Gerenciar_Destinos/ConsultarDestinos";
 import ConsultarClientes from "./Gerenciar_Clientes/ConsultarClientes";
 import CadastrarInteresses from "./Gerenciar_Interesses/CadastrarInteresses";
 import ConsultarInteresses from "./Gerenciar_Interesses/ConsultarInteresses";
+import CadastrarAgentes from "./Gerenciar_Agentes/CadastrarAgentes";
+import ConsultarAgentes from "./Gerenciar_Agentes/ConsultarAgentes"
 
 axios.defaults.baseURL = "http://localhost:3010";
 axios.defaults.headers.common["Content-Type"] = 
@@ -59,6 +61,9 @@ function TemplatePagina(props){
     const [showInteresses, setShowInteresses] = React.useState(false);
     const [showConsultaInteresses, setShowConsultaInteresses] = React.useState(false);
 
+    const [showAgentes, setShowAgentes] = React.useState(false);
+    const [showConsultaAgentes, setShowConsultaAgentes] = React.useState(false);
+
     const [mensagem, setMensagem] = React.useState("Bem vindo de volta!");
 
     return(
@@ -80,6 +85,8 @@ function TemplatePagina(props){
                         sConsultaDestinos = {setShowConsultaDestinos}
                         sInteresses = {setShowInteresses}
                         sConsultaInteresses = {setShowConsultaInteresses}
+                        sAgentes = {setShowAgentes}
+                        sConsultaAgentes={setShowConsultaAgentes}
                         logOut = {handleLogout} />
 
                     </Stack>
@@ -95,6 +102,8 @@ function TemplatePagina(props){
                 {showConsultaClientes && <ConsultarClientes />}
                 {showInteresses && <CadastrarInteresses />}
                 {showConsultaInteresses && <ConsultarInteresses /> }
+                {showAgentes && <CadastrarAgentes />}
+                {showConsultaAgentes && <ConsultarAgentes />}
 
                 </Grid>
             </Grid>

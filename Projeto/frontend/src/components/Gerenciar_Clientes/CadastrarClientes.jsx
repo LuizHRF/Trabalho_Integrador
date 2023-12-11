@@ -2,8 +2,10 @@ import React from "react";
 import Grid from '@mui/material/Unstable_Grid2';
 import Box from '@mui/system/Box';
 import TextField from '@mui/material/TextField';
-import Divider from '@mui/material/Divider';
-import Button from '@mui/material/Button';
+
+import Snackbar from '@mui/material/Snackbar';
+import axios from "axios";
+import Alert from '@mui/material/Alert';
 
 
 function CadastrarClientes(){
@@ -110,11 +112,7 @@ function CadastrarClientes(){
                 Endereço:
                 <TextField fullWidth size="small" label="endereco" variant="outlined" />
             </Grid>
-            
-            <Grid xs={3}>
-                : 
-                <TextField fullWidth size="small" label="Telefone" variant="outlined" />
-            </Grid>
+    
 
 
             <Snackbar open={openMessage} autoHideDuration={6000} onClose={handleCloseMessage}>

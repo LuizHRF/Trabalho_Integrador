@@ -24,8 +24,8 @@ export default function SelectAgente(props) {
   }, [])
 
   const handleChange = (event) => {
-    props.setAgentes(event.target.value);
-    setAgenteNome(event.target.nome);
+    props.setAgente(event.target.value);
+    setAgenteNome(event.target.name);
   };
 
   return (
@@ -38,7 +38,7 @@ export default function SelectAgente(props) {
           onChange={handleChange}
         >
           {agentes.map((a) => {
-               return <MenuItem value={a.cpf} name={a.nome}>{a.nome}</MenuItem>
+               return <MenuItem key={a.cpf} value={a.cpf} name={a.nome}>{a.nome}</MenuItem>
         })}
         </Select>
       </FormControl>

@@ -258,6 +258,67 @@ export default function Buttons(props){
         );
       }
 
+      function PositionedMenuAgentes() {
+        const [anchorEl, setAnchorEl] = React.useState(null);
+        const open = Boolean(anchorEl);
+        const handleClick = (event) => {
+          setAnchorEl(event.currentTarget);
+        };
+      
+        const handleClose = () => {
+          setAnchorEl(null);
+        }
+      
+      
+        return (
+          <div>
+            <Button sx={Psx} style={estiloBotao}
+              fullWidth="true"
+              aria-controls={open ? 'demo-positioned-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+              onClick={handleClick}
+              variant="contained"
+            >
+              Gerenciar Agentes
+            </Button>
+            <Menu
+              id="demo-positioned-menu"
+              aria-labelledby="demo-positioned-button"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+            >
+              <MenuItem sx={Psx} style={estiloBotao} onClick = {() => {
+                  desactivate(); 
+                  props.sAgentes(true)
+                  novamensagem("Cadastro de Agentes")
+                  handleClose();
+                  }}
+                  variant="contained">Cadastrar Agentes
+              </MenuItem>
+              <MenuItem sx={Psx} style={estiloBotao} onClick = {() => {
+                  desactivate(); 
+                  props.sConsultaAgentes(true);
+                  novamensagem("Consulta de Agentes");
+                  handleClose();
+                  }} 
+                  variant="contained">Consultar Agentes
+              </MenuItem>
+      
+            </Menu>
+          </div>
+        );
+      }
+
     function desactivate(){
         props.sInteresses(false);
         props.sConsultaInteresses(false);
@@ -268,6 +329,8 @@ export default function Buttons(props){
         props.sClientes(false);
         props.sDashboard(false);
         props.sDestinos(false);
+        props.sAgentes(false);
+        props.sConsultaAgentes(false);
     }
 
     function novamensagem(m){
@@ -291,6 +354,8 @@ export default function Buttons(props){
         <PositionedMenuDestinos/>
         
         <PositionedMenuInteresses/>
+
+        <PositionedMenuAgentes />
 
         <Button sx={Psx} style={estiloBotao} onClick = {() => {
             desactivate(); 

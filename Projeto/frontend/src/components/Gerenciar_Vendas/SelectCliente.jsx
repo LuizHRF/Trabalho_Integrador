@@ -24,8 +24,8 @@ export default function SelectCliente(props) {
   }, [])
 
   const handleChange = (event) => {
-    props.setClientes(event.target.value);
-    setClienteNome(event.target.nome);
+    props.setCliente(event.target.value);
+    setClienteNome(event.target.name);
   };
 
   return (
@@ -38,7 +38,7 @@ export default function SelectCliente(props) {
           onChange={handleChange}
         >
           {clientes.map((c) => {
-               return <MenuItem value={c.cpf} name={c.nome}>{c.nome}</MenuItem>
+               return <MenuItem key={c.cpf} value={c.cpf} name={c.nome}>{c.nome}</MenuItem>
         })}
         </Select>
       </FormControl>

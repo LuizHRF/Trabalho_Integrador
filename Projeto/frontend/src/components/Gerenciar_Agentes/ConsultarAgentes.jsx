@@ -1,23 +1,29 @@
 import React from "react";
 import axios from "axios";
-import CollapsibleTableDestinos from "./CollapsibleTableDestinos";
+import CollapsibleTableAgentes from "./CollapsibleTableAgentes";
 
 
 function ConsultarDestinos(props){
 
-    const [destinos, setDestinos] = React.useState([]);
+    const [agentes, setAgentes] = React.useState([]);
 
     React.useEffect(()=> {
-        const res = axios.get("/destinos");
+        const token = localStorage.getItem("token");
+        console.log(token);
+		const res = axios.get("/agentes", {
+			headers: {
+				Authorization: `bearer ${token}`,
+			},
+		});
         res.then((query) => {
-            setDestinos(query.data);
+            setAgentes(query.data);
             console.log(query.data);
         })
     }, []);
 
     return(
         
-        <CollapsibleTableDestinos rows={destinos} />      
+        <CollapsibleTableAgentes rows={agentes} />      
     );
 }
 

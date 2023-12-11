@@ -24,8 +24,8 @@ export default function SelectDestino(props) {
   }, [])
 
   const handleChange = (event) => {
-    props.setDestinos(event.target.value);
-    setDestnome(event.target.nome);
+    props.setDestino(event.target.value);
+    setDestnome(event.target.name);
   };
 
   return (
@@ -38,7 +38,7 @@ export default function SelectDestino(props) {
           onChange={handleChange}
         >
           {destinos.map((d) => {
-               return <MenuItem value={d.id} name={d.nome}>{d.nome}</MenuItem>
+            return <MenuItem key={d.id} value={d.id} name={d.nome}>{d.nome}</MenuItem>
         })}
         </Select>
       </FormControl>

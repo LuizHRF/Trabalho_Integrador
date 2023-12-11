@@ -9,30 +9,43 @@ function CadastrarDestinos(){
     <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2} style={{margin:"10px", border:"1px solid lightGrey"}}>
             
-            <Grid xs={12}>
-                Nome do Destino:
-                <TextField fullWidth size="small" label="Nome do destino" variant="outlined" />
+            <Grid xs={9}>
+                Nome:
+                <TextField fullWidth size="small" label="Nome do agente" variant="outlined" />
+            </Grid>
+            <Grid xs={3}>
+                CPF:
+                <TextField fullWidth size="small" label="CPF" variant="outlined" /> {/*É possível adicionar o prop ID nos textFields*/}
             </Grid>
 
-            <Grid xs={12}>
-                Destino:
-                <TextField fullWidth size="small" label="País" variant="outlined" />
+            <Grid xs={4}>
+                Data de nascimento:
+                <TextField fullWidth size="small" label="Data de nascimento" variant="outlined" />
+            </Grid>
+            <Grid xs={8}>
+                Comissão: 
+                <TextField fullWidth size="small" label="Comissao" variant="outlined" />
             </Grid>
 
-            <Grid xs={12}>
-                Documentos Obrigatórios:
-                <TextField fullWidth size="small" label="Documentos" variant="outlined" />
+            
+            <Grid xs={3}>
+                Salário:
+                <TextField fullWidth size="small" label="Salário" variant="outlined" />
+            </Grid>
+            <Grid xs={9}>
+                Endereço:
+                <TextField fullWidth size="small" label="Endereço" variant="outlined" />
             </Grid>
 
-            <Grid xs={12}>
-                Descrição:
-                <TextField fullWidth size="small" label="Descrição" variant="outlined" />
+            <Grid xs={3}>
+                Nível de Acesso:
+                <TextField fullWidth size="small" label="Acesso" variant="outlined" />
+            </Grid>
+            <Grid xs={9}>
+                Férias disponíveis:
+                <TextField fullWidth size="small" label="Férias" variant="outlined" />
             </Grid>
             
-            <Grid xs={12}>
-                <Button variant="contained">Cadastrar</Button>
-                <Button style={{marginLeft: "10px"}}variant="contained">Limpar</Button>
-            </Grid>
 
         </Grid>
     </Box>

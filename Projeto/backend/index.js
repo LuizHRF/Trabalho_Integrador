@@ -6,8 +6,8 @@ const LocalStrategy = require("passport-local");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { Strategy, ExtractJwt } = require("passport-jwt");
+
 const JwtStrategy = require('passport-jwt').Strategy;
-const ExtractJwt = require('passport-jwt').ExtractJwt;
 
 const pgp = require("pg-promise")({});
 
@@ -168,7 +168,7 @@ app.get("/clientes", requireJWTAuth, async (req, res) =>{
 
 app.get("/agentes", requireJWTAuth, async (req, res) =>{
     try{
-        const agentes = await db.any("SELECT * FROM agente;");
+        const agentes = await db.any("SELECT a.nome, a.cpf, a.dtnasc::VARCHAR(11), i.ferias_disp, i.comissao, i.ender, i.salario, i.nivel_acesso, i.ultima_modif::VARCHAR(11)  FROM agente a JOIN agente_info i ON a.cpf=i.cpf;");
         console.log('Retornando todos os agentes');
         res.json(agentes).status(200);
     } catch(error){
@@ -247,14 +247,14 @@ app.post("/newVenda", requireJWTAuth, async (req, res) => {
 		const vV_over = req.body.v_over;
 		const vV_tarifa = req.body.v_tarifa;
 		const vDt_embarque = req.body.dt_embarque;
-		const vDt_venda = req.body.cliente;
+		const vDt_venda = req.body.dt_venda;
 		const vObservacoes = req.body.observacoes;
 		const vOperadora = req.body.operadora;
 		const vNum_noites = req.body.num_noites;
 		const vNum_orcamento = req.body.num_orcamento;
 
         db.none(
-            "INSERT INTO venda (cliente, ag_vendedor, destino, hotel, v_taxas, v_over, v_tarifa, dt_embarque, dt_venda, observacoes, operadora, num_noites, num_orcamento) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);",
+            "INSERT INTO venda (cliente, ag_vendedor, destino, hotel, v_taxas, v_over, v_tarifa, dt_embarque, dt_venda, observacoes, operadora, num_noites, num_orcamento) VALUES ($1, $2, $3, $4, $5, $6, $7, $8::Date, $9::Date, $10, $11, $12, $13);",
             [vCliente, vAg_vendedor, vDestino, vHotel, vV_taxas, vV_over, vV_tarifa, vDt_embarque, vDt_venda, vObservacoes, vOperadora, vNum_noites, vNum_orcamento]
         );
         res.sendStatus(200);

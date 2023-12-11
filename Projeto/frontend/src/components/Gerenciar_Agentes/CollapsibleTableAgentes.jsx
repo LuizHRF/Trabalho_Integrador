@@ -12,7 +12,8 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import Stack from '@mui/material/Stack';
+
+import GridAgente from "./GridAgente";
 
 
 function Row(props) {
@@ -32,34 +33,16 @@ function Row(props) {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row" align='left'>
-          {row.id}
+          {row.cpf}
         </TableCell>
         <TableCell align="left">{row.nome}</TableCell>
+        <TableCell align="left">{row.ultima_modif}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }} style={{padding:"20px"}}>
-              <Typography variant="h5" gutterBottom component="div">
-                Informações
-              </Typography>
-                <Stack spacing={2}>
-                    <Typography variant="h6" gutterBottom component="div">
-                    {row.pais}
-                    </Typography>
-                    <Box>
-                        <Typography variant="h6" gutterBottom component="div">
-                            Descrição:
-                        </Typography>
-                            {row.descricao}
-                    </Box>
-                    <Box style={{margin:"1px solid black"}}>
-                        <Typography variant="h6" gutterBottom component="div">
-                            Documentos Obrigatórios:
-                        </Typography>
-                            {row.doc_obrigatorio}
-                    </Box>
-                </Stack>
+              <GridAgente row={row} />
             </Box>
           </Collapse>
         </TableCell>
@@ -78,13 +61,14 @@ export default function CollapsibleTableDestinos(props) {
         <TableHead>
           <TableRow>
             <TableCell />
-            <TableCell align='left'>ID</TableCell>
+            <TableCell align='left'>CPF</TableCell>
             <TableCell align="left">Nome</TableCell>
+            <TableCell align="left">Ultima modificaçao</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {props.rows.map((row) => (
-            <Row key={row.id} row={row} />
+            <Row key={row.cpf} row={row} />
           ))}
         </TableBody>
       </Table>

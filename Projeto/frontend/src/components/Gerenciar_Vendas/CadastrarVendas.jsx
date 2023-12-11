@@ -7,6 +7,12 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { Typography } from "@mui/material";
 import Button from '@mui/material/Button';
 import SelectDestino from "./SelectDestino";
+import SelectCliente from "./SelectCliente";
+
+import SelectAgente from "./SelectAgente";
+import Snackbar from '@mui/material/Snackbar';
+import axios from "axios";
+import Alert from '@mui/material/Alert';
 
 export default function CadastrarVendas(){
 
@@ -58,7 +64,14 @@ export default function CadastrarVendas(){
     async function handleSubmit() {
         if (cliente !== "" && ag_vendedor !== "" && destino !== "" && hotel !== "" && num_orcamento !== "" && operadora !== "" && num_noites !== "" && dt_embarque !== "" && dt_venda !== "" && observacoes !== "" && v_over !== "" && v_tarifa !== "" && v_taxas) {
             try {
-                await axios.post("/newVenda", {
+                parseInt(num_orcamento);
+                parseInt(num_noites);
+                parseFloat(v_over);
+                parseFloat(v_tarifa);
+                parseFloat(v_taxas);
+                parseInt(cliente);
+                parseInt(ag_vendedor);
+                const novaVenda = {
                     cliente : cliente, 
                     ag_vendedor : ag_vendedor, 
                     destino : destino,
@@ -72,7 +85,9 @@ export default function CadastrarVendas(){
                     v_taxas : v_taxas, 
                     dt_embarque : dt_embarque, 
                     dt_venda : dt_venda
-                });
+                }
+                console.log(novaVenda);
+                await axios.post("/newVenda", novaVenda);
                 setMessageText("Venda cadastrada com sucesso!");
                 setMessageSeverity("success");
                 clearForm(); // limpa o formulário apenas se cadastrado com sucesso
@@ -102,17 +117,17 @@ export default function CadastrarVendas(){
     <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2} style={{margin:"10px", border:"1px solid lightGrey"}}>
             <Grid xs={6}>
-                Cliente:
-                <SelectDestino setCliente = {setCliente} onChange={(e) => setCliente(e.target.value)} value={cliente}/>
+                Cliente: {cliente}
+                <SelectCliente setCliente={setCliente} />
             </Grid>
             <Grid xs={6}>
-                Destino:
-                <SelectDestino setDestino={setDestino} onChange={(e) => setDestino(e.target.value)} value={destino}/>
+                Destino: {destino}
+                <SelectDestino setDestino={setDestino}/>
             </Grid>
 
             <Grid xs={6}>
-                Agente:  
-                <SelectAgente setAgente = {setAg_vendedor} onChange={(e) => setAg_vendedor(e.target.value)} value={ag_vendedor}/>
+                Agente: {ag_vendedor}
+                <SelectAgente setAgente = {setAg_vendedor}/>
             </Grid>
             <Grid xs={6}>
                 Data da emissão:
@@ -155,21 +170,21 @@ export default function CadastrarVendas(){
 
             <Grid xs={4}>
                 Valor da tarifa:
-                <TextField fullWidth size="small" variant="outlined" InputProps={{ startAdornment: <InputAdornment position="start">R$</InputAdornment>}} onChange={(e) => setDt_venda(e.target.value)} value={dt_venda}/>
+                <TextField fullWidth size="small" variant="outlined" InputProps={{ startAdornment: <InputAdornment position="start">R$</InputAdornment>}} onChange={(e) => setV_tarifa(e.target.value)} value={v_tarifa}/>
             </Grid>
             <Grid xs={4}>
                 Valor da taxa:
-                <TextField fullWidth size="small" variant="outlined" InputProps={{ startAdornment: <InputAdornment position="start">R$</InputAdornment>}} onChange={(e) => setDt_venda(e.target.value)} value={dt_venda}/>
+                <TextField fullWidth size="small" variant="outlined" InputProps={{ startAdornment: <InputAdornment position="start">R$</InputAdornment>}} onChange={(e) => setV_taxas(e.target.value)} value={v_taxas}/>
             </Grid>
             <Grid xs={4}>
                 Valor do Over:
-                <TextField fullWidth size="small" variant="outlined" InputProps={{ startAdornment: <InputAdornment position="start">R$</InputAdornment>}} onChange={(e) => setDt_venda(e.target.value)} value={dt_venda}/>
+                <TextField fullWidth size="small" variant="outlined" InputProps={{ startAdornment: <InputAdornment position="start">R$</InputAdornment>}} onChange={(e) => setV_over(e.target.value)} value={v_over}/>
             </Grid>
 
 
             <Grid xs={12}>
                 <Typography>
-                    Valor final: R$ {v_over + v_tarifa + v_taxas}
+                    Valor final: R$ {parseFloat(v_over) + parseFloat(v_tarifa) + parseFloat(v_taxas)}
                 </Typography>
             </Grid>
 
