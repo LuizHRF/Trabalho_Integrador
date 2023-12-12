@@ -8,7 +8,7 @@ import axios from "axios";
 
 export default function SelectCliente(props) {
   const [clientes, setClientes] = React.useState([]);
-  const [clienteNome, setClienteNome] = React.useState([]);
+  const [clienteNome, setClienteNome] = React.useState();
 
   React.useEffect(()=> {
     const token = localStorage.getItem("token");
@@ -25,20 +25,19 @@ export default function SelectCliente(props) {
 
   const handleChange = (event) => {
     props.setCliente(event.target.value);
-    setClienteNome(event.target.name);
+    setClienteNome(event.target.nome);
   };
 
   return (
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Cliente</InputLabel>
         <Select
           value={clienteNome}
           label="Cliente"
           onChange={handleChange}
         >
           {clientes.map((c) => {
-               return <MenuItem key={c.cpf} value={c.cpf} name={c.nome}>{c.nome}</MenuItem>
+               return <MenuItem key={c.cpf} value={c.cpf} nome={c.nome}>{c.nome}</MenuItem>
         })}
         </Select>
       </FormControl>

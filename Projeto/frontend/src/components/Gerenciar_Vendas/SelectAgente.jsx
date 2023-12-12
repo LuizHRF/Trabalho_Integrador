@@ -8,7 +8,7 @@ import axios from "axios";
 
 export default function SelectAgente(props) {
   const [agentes, setAgentes] = React.useState([]);
-  const [agenteNome, setAgenteNome] = React.useState([]);
+  const [agenteNome, setAgenteNome] = React.useState();
 
   React.useEffect(()=> {
     const token = localStorage.getItem("token");
@@ -31,7 +31,6 @@ export default function SelectAgente(props) {
   return (
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Agente</InputLabel>
         <Select
           value={agenteNome}
           label="agente"

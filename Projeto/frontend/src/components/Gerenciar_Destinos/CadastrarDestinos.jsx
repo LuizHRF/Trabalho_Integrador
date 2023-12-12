@@ -4,6 +4,8 @@ import Box from '@mui/system/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import axios from "axios";
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 function CadastrarDestinos(){
 
@@ -11,6 +13,10 @@ function CadastrarDestinos(){
     const [pais, setPais] = React.useState("");
     const [descricao, setDescricao] = React.useState("");
     const [docs_obg, setDocs_obg] = React.useState("");
+
+    const [openMessage, setOpenMessage] = React.useState(false);
+    const [messageText, setMessageText] = React.useState("");
+    const [messageSeverity, setMessageSeverity] = React.useState("success");
 
     function clearForm() {
         setNomeDestino("");
@@ -22,20 +28,37 @@ function CadastrarDestinos(){
     async function handleSubmit() {
         if (nomeDestino !== "" && pais !== "" && descricao !== "" && docs_obg !== "") {
             try {
+
+                const token = localStorage.getItem("token");
                 await axios.post("/newDestino", {
                     nome: nomeDestino,
                     pais: pais,
                     descricao : descricao, 
-                    docs_obrigatorios : docs_obg
-                });
-                console.log("Destino cadastrado com sucesso");
+                    doc_obrigatorios : docs_obg
+                }, {headers: { Authorization: `bearer ${token}`}});
+                setMessageText("Destino cadastrado com sucesso!");
+                setMessageSeverity("success");
                 clearForm(); // limpa o formulário apenas se cadastrado com sucesso
             } catch (error) {
                 console.log(error);
-            } 
-        }            
+                setMessageText("Falha no cadastro do destino!");
+                setMessageSeverity("error");
+            } finally {
+                setOpenMessage(true);
+            }
+        } else {
+            setMessageText("Dados de destino inválidos!");
+            setMessageSeverity("warning");
+            setOpenMessage(true);
+        }
     }
 
+    function handleCloseMessage(_, reason) {
+        if (reason === "clickaway") {
+            return;
+        }
+        setOpenMessage(false);
+    } 
 
     return(
     <Box sx={{ flexGrow: 1 }}>
@@ -65,6 +88,12 @@ function CadastrarDestinos(){
                 <Button variant="contained" onClick={handleSubmit}>Cadastrar</Button>
                 <Button style={{marginLeft: "10px"}}variant="contained" onClick={clearForm}>Limpar</Button>
             </Grid>
+
+            <Snackbar open={openMessage} autoHideDuration={6000} onClose={handleCloseMessage}>
+                <Alert severity={messageSeverity} onClose={handleCloseMessage}>
+                    {messageText}
+                </Alert>
+            </Snackbar>
 
         </Grid>
     </Box>

@@ -17,7 +17,6 @@ CREATE TABLE IF NOT EXISTS agente_info(
     nivel_acesso INTEGER NOT NULL,
     cpf BIGINT NOT NULL,
     password VARCHAR(100),
-    CONSTRAINT pk_info PRIMARY KEY (ultima_modif, cpf),
     CONSTRAINT fk_info_agente FOREIGN KEY (cpf) REFERENCES agente(cpf)
 );
 --INSERT INTO agente_info(ferias_disp, comissao, ender, salario, ultima_modif, nivel_acesso, cpf) VALUES (0, '3,5% de comissão, sem acordos', 'Não tem endereço', 12000.95, NOW(), 0, 1111);

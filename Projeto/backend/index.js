@@ -169,7 +169,7 @@ app.get("/clientes",requireJWTAuth,  async (req, res) =>{
 
 app.get("/agentes",requireJWTAuth, async (req, res) =>{
     try{
-        const agentes = await db.any("SELECT * FROM agente;");
+        const agentes = await db.any("SELECT nome, dtnasc::VARCHAR(11), a.cpf, i.*, i.ultima_modif::VARCHAR(11) as ultima_modificacao FROM agente a JOIN agente_info i ON a.cpf=i.cpf;");
         console.log('Retornando todos os agentes');
         res.json(agentes).status(200);
     } catch(error){
@@ -288,7 +288,7 @@ app.post("/newDestino",requireJWTAuth, async (req, res) => {
     try {
         const dnome = req.body.nome;
         const dpais = req.body.pais;
-		const ddocs = req.body.docs_obrigatorios;
+		const ddocs = req.body.doc_obrigatorios;
 		const ddescr = req.body.descricao;
 
         db.none(
@@ -322,13 +322,102 @@ app.put("/alterDestino", requireJWTAuth, async (req, res) => {
     }
 });
 
-app.delete("/delDestino", requireJWTAuth, async (req, res) => {
+app.delete("/delDestino/:id", requireJWTAuth, async (req, res) => {
 	try{
+
+		console.log(req.params.id);
+		db.none(
+			"DELETE FROM destino WHERE id = $1;",
+			[req.params.id]
+		);
+
+		res.sendStatus(200);
+	} catch (error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+})
+
+app.put("/alterInteresse", requireJWTAuth, async (req, res) => {
+
+	try{
+		const newContato = req.body.contato;
+		const newPax = req.body.pax;
 		const id = req.body.id;
 
-		db.any(
-			"DELETE CASCADE FROM destino WHERE id = $1;",
-			[id]
+		db.none(
+			"UPDATE interesse SET contato= $1, qtd_passageiros = $2 WHERE id= $3;",
+			[newContato, newPax, id]
+		);
+		res.sendStatus(200);
+	} catch (error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+});
+
+app.delete("/delInteresse/:id", requireJWTAuth, async (req, res) => {
+	try{
+
+		db.none(
+			"DELETE FROM interesse WHERE id = $1;",
+			[req.params.id]
+		);
+
+		res.sendStatus(200);
+	} catch (error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+})
+
+
+app.post("/alterAgente", requireJWTAuth, async (req, res) => {
+
+	try{
+		const ferias_disp =  req.body.ferias_disp;
+		const comissao = req.body.comissao;
+		const ender = req.body.ender;
+		const salario = req.body.salario;
+		const nivel_acesso =req.body.nivel_acesso;
+		const cpf = req.body.cpf;
+
+		db.none(
+			"INSERT INTO agente_info(ferias_disp, comissao, ender, salario, ultima_modif, nivel_acesso, cpf) VALUES ($1, $2, $3, $4, NOW(), $5, $6);",
+			[ferias_disp, comissao, ender, salario, nivel_acesso, cpf]
+		);
+		res.sendStatus(200);
+	} catch (error) {
+        console.log(error);
+        res.sendStatus(400);
+
+    }
+});
+
+app.put("/alterCliente", requireJWTAuth, async (req, res) => {
+
+	try{
+		const newContato = req.body.contato;
+		const newPax = req.body.pax;
+		const id = req.body.id;
+
+		db.none(
+			"UPDATE interesse SET contato= $1, qtd_passageiros = $2 WHERE id= $3;",
+			[newContato, newPax, id]
+		);
+		res.sendStatus(200);
+	} catch (error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+});
+
+app.delete("/delCliente/:id", requireJWTAuth, async (req, res) => {
+	try{
+
+		db.none(
+			"DELETE FROM interesse WHERE id = $1;",
+			[req.params.id]
 		);
 
 		res.sendStatus(200);

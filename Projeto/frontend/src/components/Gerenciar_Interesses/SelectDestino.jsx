@@ -8,7 +8,7 @@ import axios from "axios";
 
 export default function SelectDestino(props) {
   const [destinos, setDestinos] = React.useState([]);
-  const [destNome, setDestnome] = React.useState([]);
+  const [destNome, setDestnome] = React.useState();
 
   React.useEffect(()=> {
     const token = localStorage.getItem("token");
@@ -31,14 +31,14 @@ export default function SelectDestino(props) {
   return (
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Destino</InputLabel>
+        
         <Select
           value={destNome}
           label="Destino"
           onChange={handleChange}
         >
           {destinos.map((d) => {
-               return <MenuItem value={d.id} name={d.nome}>{d.nome}</MenuItem>
+               return <MenuItem value={d.id} nome={d.nome}>{d.nome}</MenuItem>
         })}
         </Select>
       </FormControl>

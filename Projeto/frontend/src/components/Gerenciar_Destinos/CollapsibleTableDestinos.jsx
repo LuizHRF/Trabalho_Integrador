@@ -53,9 +53,7 @@ function Row(props) {
     const token = localStorage.getItem("token");
     console.log(row.id);
       try {
-        await axios.delete("/delDestino",  { headers: { Authorization: `bearer ${token}`,},}, {
-            id : row.id,
-        });
+        await axios.delete("/delDestino/" + row.id,  { headers: { Authorization: `bearer ${token}`,},});
         setMessageText("Destino removido com sucesso!");
         setMessageSeverity("success");
       } catch (error) {

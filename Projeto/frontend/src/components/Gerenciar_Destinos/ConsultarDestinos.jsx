@@ -21,6 +21,7 @@ function ConsultarDestinos(props){
         })
     };
 
+
     React.useEffect(()=> {
         getData();
     }, []);
