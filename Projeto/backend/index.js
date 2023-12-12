@@ -5,9 +5,9 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const { Strategy, ExtractJwt } = require("passport-jwt");
+
 const JwtStrategy = require('passport-jwt').Strategy;
-//const ExtractJwt = require('passport-jwt').ExtractJwt;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
 
 const pgp = require("pg-promise")({});
 
@@ -130,11 +130,11 @@ app.post(
 	},
 );
 
-app.get("/", async (req, res) => {
+app.get("/", requireJWTAuth, async (req, res) => {
 	res.send("Hello, world!");
 });
 
-app.post("/logout", function (req, res, next) {
+app.post("/logout",requireJWTAuth, function (req, res, next) {
 	req.logout(function (err) {
 		if (err) {
 			return next(err);
@@ -143,7 +143,7 @@ app.post("/logout", function (req, res, next) {
 	});
 });
 
-app.get("/vendas", async (req, res) =>{
+app.get("/vendas",requireJWTAuth,  async (req, res) =>{
 
     try{
         const vendas = await db.any("SELECT v.*, v.dt_embarque::VARCHAR(11), v.dt_venda::VARCHAR(11), a.nome as ag_nome, d.nome, c.nome as cli_nome FROM venda v JOIN agente a ON v.ag_vendedor = a.cpf JOIN destino d ON d.id = v.destino JOIN cliente c ON v.cliente = c.cpf;");
@@ -156,7 +156,7 @@ app.get("/vendas", async (req, res) =>{
 
 })
 
-app.get("/clientes", async (req, res) =>{
+app.get("/clientes",requireJWTAuth,  async (req, res) =>{
     try{
         const clientes = await db.any("SELECT * FROM cliente;");
         console.log('Retornando todas os clientes');
@@ -167,7 +167,7 @@ app.get("/clientes", async (req, res) =>{
     }
 })
 
-app.get("/agentes",  async (req, res) =>{
+app.get("/agentes",requireJWTAuth, async (req, res) =>{
     try{
         const agentes = await db.any("SELECT * FROM agente;");
         console.log('Retornando todos os agentes');
@@ -178,7 +178,7 @@ app.get("/agentes",  async (req, res) =>{
     }
 })
 
-app.get("/destinos", async (req, res) =>{
+app.get("/destinos", requireJWTAuth, async (req, res) =>{
 
     try{
         const destinos = await db.any("SELECT * FROM destino;");
@@ -191,7 +191,7 @@ app.get("/destinos", async (req, res) =>{
     
 })
 
-app.get("/interesses",  async (req, res) =>{
+app.get("/interesses",requireJWTAuth, async (req, res) =>{
     try{
         const interesses = await db.any("SELECT i.id, i.cliente_nome, i.data_interesse::VARCHAR(11), i.contato, i.qtd_passageiros, d.nome as destino FROM interesse i JOIN destino d ON i.destino = d.id;");
         console.log('Retornando todas os interesses');
@@ -202,7 +202,7 @@ app.get("/interesses",  async (req, res) =>{
     }
 })
 
-app.get("/Relatorio_agente_e_data",  async (req, res) =>{
+app.get("/Relatorio_agente_e_data",requireJWTAuth, async (req, res) =>{
     try{
         const relatorio = await db.any("SELECT a.nome, i.salario, i.comissao, v.* FROM agente a NATURAL JOIN agente_info i JOIN venda v ON v.ag_vendedor=a.cpf;");
         console.log('Retornando todas os relatorio de agente');
@@ -213,7 +213,7 @@ app.get("/Relatorio_agente_e_data",  async (req, res) =>{
     }
 })
 
-app.post("/newAgente",  (req, res) => {
+app.post("/newAgente",requireJWTAuth, (req, res) => {
 
     const aNome = req.body.nome;
     const aCpf = req.body.cpf;
@@ -230,7 +230,7 @@ app.post("/newAgente",  (req, res) => {
     )
 
     db.none(
-        "INSERT INTO agente_info(ferias_disp, comissao, ender, salario, ultima_modif, nivel_acesso, cpf) VALUES ($1, $2, $3, $4, NOW(), $5, %6);",
+        "INSERT INTO agente_info(ferias_disp, comissao, ender, salario, ultima_modif, nivel_acesso, cpf) VALUES ($1, $2, $3, $4, NOW(), $5, $6);",
         [aFerias, aComissao, aEnder, aSalario, aAcesso, aCpf]
     )
 
@@ -238,7 +238,7 @@ app.post("/newAgente",  (req, res) => {
 })
 
 
-app.post("/newVenda",  async (req, res) => {
+app.post("/newVenda",requireJWTAuth, async (req, res) => {
     try {
         const vCliente = req.body.cliente;
         const vAg_vendedor = req.body.ag_vendedor;
@@ -265,7 +265,7 @@ app.post("/newVenda",  async (req, res) => {
     }
 });
 
-app.post("/newInteresse", async (req, res) => {
+app.post("/newInteresse", requireJWTAuth, async (req, res) => {
     try {
         const iCliente_nome = req.body.cliente_nome;
         const iContato = req.body.contato;
@@ -284,7 +284,7 @@ app.post("/newInteresse", async (req, res) => {
     }
 });
 
-app.post("/newDestino", async (req, res) => {
+app.post("/newDestino",requireJWTAuth, async (req, res) => {
     try {
         const dnome = req.body.nome;
         const dpais = req.body.pais;
@@ -292,7 +292,7 @@ app.post("/newDestino", async (req, res) => {
 		const ddescr = req.body.descricao;
 
         db.none(
-            "INSERT INTO destino (nome, pais, descricao, docs_obrigatorios) VALUES ($1, $2, $3, $4);",
+            "INSERT INTO destino (nome, pais, descricao, doc_obrigatorios) VALUES ($1, $2, $3, $4);",
             [dnome, dpais, ddescr, ddocs]
         );
         res.sendStatus(200);
@@ -301,3 +301,39 @@ app.post("/newDestino", async (req, res) => {
         res.sendStatus(400);
     }
 });
+
+app.put("/alterDestino", requireJWTAuth, async (req, res) => {
+
+	try{
+		console.log(req.body);
+		const newPais = req.body.pais;
+		const newDocs = req.body.docs_obrigatorios;
+		const newDescricao = req.body.descricao;
+		const id = req.body.id;
+
+		db.none(
+			"UPDATE destino SET doc_obrigatorios= $1, pais = $2, descricao = $3 WHERE id= $4;",
+			[newDocs, newPais, newDescricao, id]
+		);
+		res.sendStatus(200);
+	} catch (error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+});
+
+app.delete("/delDestino", requireJWTAuth, async (req, res) => {
+	try{
+		const id = req.body.id;
+
+		db.any(
+			"DELETE CASCADE FROM destino WHERE id = $1;",
+			[id]
+		);
+
+		res.sendStatus(200);
+	} catch (error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+})

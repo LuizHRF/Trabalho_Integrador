@@ -86,7 +86,7 @@ export default function CollapsibleTableVendas(props) {
         <TableHead>
           <TableRow>
             <TableCell />
-            <TableCell align='left'>ID</TableCell>
+            <TableCell align='left'>Num. Orçamento</TableCell>
             <TableCell align="left">Cliente</TableCell>
             <TableCell align="left">Destino</TableCell>
             <TableCell align="left">Data de venda</TableCell>
@@ -94,7 +94,7 @@ export default function CollapsibleTableVendas(props) {
         </TableHead>
         <TableBody>
           {props.rows.map((row) => (
-            <Row key={row.id} row={row} />
+            <Row key={row.num_orcamento} row={row} />
           ))}
         </TableBody>
       </Table>
