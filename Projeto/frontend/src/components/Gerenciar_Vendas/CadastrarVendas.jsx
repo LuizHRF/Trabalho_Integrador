@@ -56,6 +56,7 @@ export default function CadastrarVendas(){
     async function handleSubmit() {
         if (cliente !== "" && ag_vendedor !== "" && destino !== "" && hotel !== "" && num_orcamento !== "" && operadora !== "" && num_noites !== "" && dt_embarque !== "" && dt_venda !== "" && observacoes !== "" && v_over !== "" && v_tarifa !== "" && v_taxas) {
             try {
+                const token = localStorage.getItem("token");
                 parseInt(num_orcamento);
                 parseInt(num_noites);
                 parseFloat(v_over);
@@ -167,6 +168,12 @@ export default function CadastrarVendas(){
                 <Button variant="contained" onClick={handleSubmit}>Cadastrar</Button>
                 <Button style={{marginLeft: "10px"}}variant="contained" onClick={handleCancelClick}>Limpar</Button>
             </Grid>
+
+            <Snackbar open={openMessage} autoHideDuration={6000} onClose={handleCloseMessage}>
+            <Alert severity={messageSeverity} onClose={handleCloseMessage}>
+                {messageText}
+            </Alert>
+        </Snackbar>
 
         </Grid>
 

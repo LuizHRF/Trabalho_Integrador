@@ -1,13 +1,13 @@
-import React from "react";
 import Grid from '@mui/material/Unstable_Grid2';
 import Box from '@mui/system/Box';
 import TextField from '@mui/material/TextField';
 import SelectDestino from "./SelectDestino";
 import Button from '@mui/material/Button';
-
+import React from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import axios from "axios";
 import Alert from '@mui/material/Alert';
+
 
 
 export default function CadastrarInteresses(){
@@ -17,7 +17,7 @@ export default function CadastrarInteresses(){
     const [destino, setDestino] = React.useState("");
     const [qtd_passageiros, setQtd_passageiros] = React.useState("");
     const [data_interesse, setData_interesse] = React.useState("");
-
+    const [value, setValue] = React.useState(null);
 
     const [openMessage, setOpenMessage] = React.useState(false);
     const [messageText, setMessageText] = React.useState("");
@@ -44,13 +44,15 @@ export default function CadastrarInteresses(){
     async function handleSubmit() {
         if (cliente_nome !== "" && contato !== "" && destino !== "" && qtd_passageiros !== "" && data_interesse !== "") {
             try {
+                const token = localStorage.getItem("token");
+
                 await axios.post("/newInteresse", {
                     cliente_nome : cliente_nome, 
                     contato : contato, 
                     destino : destino,
                     qtd_passageiros : qtd_passageiros,
                     data_interesse : data_interesse
-                });
+                }, {headers: { Authorization: `bearer ${token}`}});
                 setMessageText("Interesse cadastrado com sucesso!");
                 setMessageSeverity("success");
                 clearForm(); // limpa o formulário apenas se cadastrado com sucesso
@@ -75,7 +77,6 @@ export default function CadastrarInteresses(){
         setOpenMessage(false);
     } 
 
-
     return(
     <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2} style={{margin:"10px", border:"1px solid lightGrey"}}>
@@ -98,7 +99,8 @@ export default function CadastrarInteresses(){
             </Grid>
             <Grid xs={4}>
                 Data de interesse:
-                <TextField fullWidth size="small" label="Data de interesse" variant="outlined" onChange={(e) => setData_interesse(e.target.value)} value={data_interesse}/>
+            <TextField fullWidth size="small" label="Data de interesse" variant="outlined" onChange={(e) => setData_interesse(e.target.value)} value={data_interesse}/>
+
             </Grid>
             <Grid xs={4}>
                 Quantidade de passageiros:

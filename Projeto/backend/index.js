@@ -116,6 +116,7 @@ const requireJWTAuth = passport.authenticate("jwt", { session: false });
 
 app.listen(3010, () => console.log("Servidor rodando na porta 3010."));
 
+
 app.post(
 	"/login",
 	passport.authenticate("local", { session: false }),
@@ -160,11 +161,11 @@ app.post("/addAdm", async (req, res) => {
 })
 
 
-app.get("/", async (req, res) => {
+app.get("/", requireJWTAuth, async (req, res) => {
 	res.send("Hello, world!");
 });
 
-app.post("/logout", function (req, res, next) {
+app.post("/logout", requireJWTAuth, function (req, res, next) {
 	req.logout(function (err) {
 		if (err) {
 			return next(err);
@@ -173,7 +174,7 @@ app.post("/logout", function (req, res, next) {
 	});
 });
 
-app.get("/vendas", async (req, res) =>{
+app.get("/vendas", requireJWTAuth, async (req, res) =>{
 
     try{
         const vendas = await db.any("SELECT v.*, v.dt_embarque::VARCHAR(11), v.dt_venda::VARCHAR(11), a.nome as ag_nome, d.nome, c.nome as cli_nome FROM venda v JOIN agente a ON v.ag_vendedor = a.cpf JOIN destino d ON d.id = v.destino JOIN cliente c ON v.cliente = c.cpf;");
@@ -186,7 +187,7 @@ app.get("/vendas", async (req, res) =>{
 
 })
 
-app.get("/clientes", async (req, res) =>{
+app.get("/clientes", requireJWTAuth, async (req, res) =>{
     try{
         const clientes = await db.any("SELECT * FROM cliente;");
         console.log('Retornando todas os clientes');
@@ -197,7 +198,7 @@ app.get("/clientes", async (req, res) =>{
     }
 })
 
-app.get("/agentes",  async (req, res) =>{
+app.get("/agentes", requireJWTAuth, async (req, res) =>{
     try{
         const agentes = await db.any("SELECT * FROM agente;");
         console.log('Retornando todos os agentes');
@@ -208,7 +209,7 @@ app.get("/agentes",  async (req, res) =>{
     }
 })
 
-app.get("/destinos", async (req, res) =>{
+app.get("/destinos", requireJWTAuth, async (req, res) =>{
 
     try{
         const destinos = await db.any("SELECT * FROM destino;");
@@ -221,7 +222,7 @@ app.get("/destinos", async (req, res) =>{
     
 })
 
-app.get("/interesses",  async (req, res) =>{
+app.get("/interesses", requireJWTAuth, async (req, res) =>{
     try{
         const interesses = await db.any("SELECT i.id, i.cliente_nome, i.data_interesse::VARCHAR(11), i.contato, i.qtd_passageiros, d.nome as destino FROM interesse i JOIN destino d ON i.destino = d.id;");
         console.log('Retornando todas os interesses');
@@ -232,7 +233,7 @@ app.get("/interesses",  async (req, res) =>{
     }
 })
 
-app.get("/Relatorio_agente_e_data",  async (req, res) =>{
+app.get("/Relatorio_agente_e_data", requireJWTAuth, async (req, res) =>{
     try{
         const relatorio = await db.any("SELECT a.nome, i.salario, i.comissao, v.* FROM agente a NATURAL JOIN agente_info i JOIN venda v ON v.ag_vendedor=a.cpf;");
         console.log('Retornando todas os relatorio de agente');
@@ -243,7 +244,7 @@ app.get("/Relatorio_agente_e_data",  async (req, res) =>{
     }
 })
 
-app.post("/newAgente",  (req, res) => {
+app.post("/newAgente", requireJWTAuth, async (req, res) => {
 
     const aNome = req.body.nome;
     const aCpf = req.body.cpf;
@@ -255,7 +256,7 @@ app.post("/newAgente",  (req, res) => {
     const aAcesso = req.body.acesso;
 
     db.none(
-        "INSERT INTO agente(nome, cpf, dtnasc) VALUES ($1, $2, $3);",
+        "INSERT INTO agente(nome, cpf, dtnasc::DATE) VALUES ($1, $2, $3);",
         [aNome, aCpf, aDtnasc]
     )
 
@@ -268,7 +269,7 @@ app.post("/newAgente",  (req, res) => {
 })
 
 
-app.post("/newVenda",  async (req, res) => {
+app.post("/newVenda", requireJWTAuth, async (req, res) => {
     try {
         const vCliente = req.body.cliente;
         const vAg_vendedor = req.body.ag_vendedor;
@@ -295,7 +296,7 @@ app.post("/newVenda",  async (req, res) => {
     }
 });
 
-app.post("/newInteresse", async (req, res) => {
+app.post("/newInteresse", requireJWTAuth, async (req, res) => {
     try {
         const iCliente_nome = req.body.cliente_nome;
         const iContato = req.body.contato;
@@ -314,7 +315,7 @@ app.post("/newInteresse", async (req, res) => {
     }
 });
 
-app.post("/newDestino", async (req, res) => {
+app.post("/newDestino", requireJWTAuth, async (req, res) => {
     try {
         const dnome = req.body.nome;
         const dpais = req.body.pais;

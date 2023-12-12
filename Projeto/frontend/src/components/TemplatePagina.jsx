@@ -92,7 +92,7 @@ function TemplatePagina(props){
                     </Stack>
                 </Grid>
                 <Grid xs={9}>
-
+                                    
                 {showDashBoard && <DashBoard />}
                 {showVendas && <CadastrarVendas />}
                 {showClientes && <CadastrarClientes />}
