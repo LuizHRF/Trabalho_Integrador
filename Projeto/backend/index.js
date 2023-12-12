@@ -130,6 +130,36 @@ app.post(
 	},
 );
 
+
+app.post("/addAdm", async (req, res) => {
+	try{
+		
+		const aNome = req.body.nome;
+		const aCpf = req.body.cpf;
+		const aDtnasc = req.body.dtnasc;
+		const aFerias = req.body.ferias;
+		const aEnder = req.body.ender;
+		const aComissao = req.body.comissao;
+		const aSalario = req.body.salario;
+		const aAcesso = req.body.acesso;
+	
+		db.none(
+			"INSERT INTO agente(nome, cpf, dtnasc) VALUES ($1, $2, $3);",
+			[aNome, aCpf, aDtnasc]
+		)
+	
+		db.none(
+			"INSERT INTO agente_info(ferias_disp, comissao, ender, salario, ultima_modif, nivel_acesso, cpf) VALUES ($1, $2, $3, $4, NOW(), $5, %6);",
+			[aFerias, aComissao, aEnder, aSalario, aAcesso, aCpf]
+		)
+		res.sendStatus(200);
+	} catch(error){
+        console.log(error);
+        res.sendStatus(400);
+	}
+})
+
+
 app.get("/", async (req, res) => {
 	res.send("Hello, world!");
 });
@@ -288,11 +318,11 @@ app.post("/newDestino", async (req, res) => {
     try {
         const dnome = req.body.nome;
         const dpais = req.body.pais;
-		const ddocs = req.body.docs_obrigatorios;
+		const ddocs = req.body.doc_obrigatorios;
 		const ddescr = req.body.descricao;
 
         db.none(
-            "INSERT INTO destino (nome, pais, descricao, docs_obrigatorios) VALUES ($1, $2, $3, $4);",
+            "INSERT INTO destino (nome, pais, descricao, doc_obrigatorios) VALUES ($1, $2, $3, $4);",
             [dnome, dpais, ddescr, ddocs]
         );
         res.sendStatus(200);
