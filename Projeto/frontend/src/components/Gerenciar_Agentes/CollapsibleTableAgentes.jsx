@@ -12,13 +12,31 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import GridAgenteAlteracao from './GridAgenteAlteracao';
 
 import GridAgente from "./GridAgente";
+
+import { Button } from '@mui/material';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
+
+  const [alteracao, setAlteracao] = React.useState(true);
+  function alter(){
+    setAlteracao(!alteracao);
+  };
+
+  const estiloBotao = {
+    border:"1px solid Grey",
+    borderRadius:"5px",
+    padding:"10px",
+    backgroundColor: "Lightblue",
+    color:"black",
+  }
 
   return (
     <React.Fragment>
@@ -36,13 +54,15 @@ function Row(props) {
           {row.cpf}
         </TableCell>
         <TableCell align="left">{row.nome}</TableCell>
-        <TableCell align="left">{row.ultima_modif}</TableCell>
+        <TableCell align="left">{row.ultima_modificacao}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }} style={{padding:"20px"}}>
-              <GridAgente row={row} />
+              {alteracao ? (<GridAgente row={row} estilo={estiloBotao}/>) : (<GridAgenteAlteracao row={row} estilo={estiloBotao} />)}
+            <Button variant="contained" style={estiloBotao} onClick={alter}>ALTERAR INFORMAÇÕES</Button>
+        
             </Box>
           </Collapse>
         </TableCell>

@@ -7,7 +7,7 @@ function ConsultarDestinos(props){
 
     const [destinos, setDestinos] = React.useState([]);
 
-    React.useEffect(()=> {
+    async function getData () {
         const token = localStorage.getItem("token");
         console.log(token);
 		const res = axios.get("/destinos", {
@@ -19,6 +19,11 @@ function ConsultarDestinos(props){
             setDestinos(query.data);
             console.log(query.data);
         })
+    };
+
+
+    React.useEffect(()=> {
+        getData();
     }, []);
 
 

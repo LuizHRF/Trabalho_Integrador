@@ -29,7 +29,7 @@ export default function Buttons(props){
         return (
           <div>
             <Button sx={Psx} style={estiloBotao}
-              fullWidth="true"
+              fullWidth={true}
               aria-controls={open ? 'demo-positioned-menu' : undefined}
               aria-haspopup="true"
               aria-expanded={open ? 'true' : undefined}
@@ -90,7 +90,7 @@ export default function Buttons(props){
         return (
           <div>
             <Button sx={Psx} style={estiloBotao}
-              fullWidth="true"
+              fullWidth={true}
               aria-controls={open ? 'demo-positioned-menu' : undefined}
               aria-haspopup="true"
               aria-expanded={open ? 'true' : undefined}
@@ -151,7 +151,7 @@ export default function Buttons(props){
         return (
           <div>
             <Button sx={Psx} style={estiloBotao}
-              fullWidth="true"
+              fullWidth={true}
               aria-controls={open ? 'demo-positioned-menu' : undefined}
               aria-haspopup="true"
               aria-expanded={open ? 'true' : undefined}
@@ -212,7 +212,7 @@ export default function Buttons(props){
         return (
           <div>
             <Button sx={Psx} style={estiloBotao}
-              fullWidth="true"
+              fullWidth={true}
               aria-controls={open ? 'demo-positioned-menu' : undefined}
               aria-haspopup="true"
               aria-expanded={open ? 'true' : undefined}
@@ -273,7 +273,7 @@ export default function Buttons(props){
         return (
           <div>
             <Button sx={Psx} style={estiloBotao}
-              fullWidth="true"
+              fullWidth={true}
               aria-controls={open ? 'demo-positioned-menu' : undefined}
               aria-haspopup="true"
               aria-expanded={open ? 'true' : undefined}
