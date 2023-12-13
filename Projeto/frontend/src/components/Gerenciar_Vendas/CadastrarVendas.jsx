@@ -8,13 +8,16 @@ import { Typography } from "@mui/material";
 import Button from '@mui/material/Button';
 import SelectDestino from "./SelectDestino";
 import SelectCliente from "./SelectCliente";
-
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 import SelectAgente from "./SelectAgente";
-//import Snackbar from '@mui/material/Snackbar';
 import axios from "axios";
-//import Alert from '@mui/material/Alert';
 
 export default function CadastrarVendas(){
+
+    const [openMessage, setOpenMessage] = React.useState(false);
+    const [messageText, setMessageText] = React.useState("");
+    const [messageSeverity, setMessageSeverity] = React.useState("success");
 
     const [cliente, setCliente] = React.useState("");
     const [ag_vendedor, setAg_vendedor] = React.useState("");
@@ -46,9 +49,12 @@ export default function CadastrarVendas(){
         setDt_venda("");
     }
 
+ 
     function handleCancelClick() {
-        if (cliente !== "" || ag_vendedor !== "" || destino !== "" || hotel !== "" || num_orcamento !== "" || operadora !== "" || num_noites !== "" || dt_embarque !== "" || dt_venda !== "" || observacoes !== "" || v_over !== "" || v_tarifa !== "" || v_taxas) {
-            console.log("Limpado")
+        if (cliente !== "" || ag_vendedor !== "" || destino !== "" || hotel !== "" || num_orcamento !== "" || operadora !== "" || num_noites !== "" || dt_embarque !== "" || dt_venda !== "" || observacoes !== "" || v_over !== "" || v_tarifa !== "" || v_taxas){
+            setMessageText("Cadastro de venda cancelado!");
+            setMessageSeverity("warning");
+            setOpenMessage(true);
         }
         clearForm();
     }
@@ -57,6 +63,7 @@ export default function CadastrarVendas(){
         if (cliente !== "" && ag_vendedor !== "" && destino !== "" && hotel !== "" && num_orcamento !== "" && operadora !== "" && num_noites !== "" && dt_embarque !== "" && dt_venda !== "" && observacoes !== "" && v_over !== "" && v_tarifa !== "" && v_taxas) {
             try {
                 const token = localStorage.getItem("token");
+
                 parseInt(num_orcamento);
                 parseInt(num_noites);
                 parseFloat(v_over);
@@ -64,7 +71,7 @@ export default function CadastrarVendas(){
                 parseFloat(v_taxas);
                 parseInt(cliente);
                 parseInt(ag_vendedor);
-                const novaVenda = {
+                const newVenda = {
                     cliente : cliente, 
                     ag_vendedor : ag_vendedor, 
                     destino : destino,
@@ -79,14 +86,31 @@ export default function CadastrarVendas(){
                     dt_embarque : dt_embarque, 
                     dt_venda : dt_venda
                 }
-                console.log(novaVenda);
-                await axios.post("/newVenda", novaVenda);
+
+                await axios.post("/newVenda", newVenda, {headers: { Authorization: `bearer ${token}`}});
+                setMessageText("Venda cadastrada com sucesso!");
+                setMessageSeverity("success");
                 clearForm(); // limpa o formulário apenas se cadastrado com sucesso
             } catch (error) {
                 console.log(error);
-            } 
+                setMessageText("Falha no cadastro da venda!");
+                setMessageSeverity("error");
+            } finally {
+                setOpenMessage(true);
+            }
+        } else {
+            setMessageText("Dados de venda inválidos!");
+            setMessageSeverity("warning");
+            setOpenMessage(true);
         }
     }
+
+    function handleCloseMessage(_, reason) {
+        if (reason === "clickaway") {
+            return;
+        }
+        setOpenMessage(false);
+    } 
 
 
     return(
@@ -170,10 +194,10 @@ export default function CadastrarVendas(){
             </Grid>
 
             <Snackbar open={openMessage} autoHideDuration={6000} onClose={handleCloseMessage}>
-            <Alert severity={messageSeverity} onClose={handleCloseMessage}>
-                {messageText}
-            </Alert>
-        </Snackbar>
+                <Alert severity={messageSeverity} onClose={handleCloseMessage}>
+                    {messageText}
+                </Alert>
+            </Snackbar>
 
         </Grid>
 

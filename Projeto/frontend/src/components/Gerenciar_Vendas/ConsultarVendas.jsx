@@ -1,3 +1,4 @@
+
 import React from "react";
 import CollapsibleTableVendas from "./CollapsibleTableVendas";
 import Box from '@mui/system/Box';
@@ -7,8 +8,9 @@ function ConsultarVendas(props){
 
     const [vendas, setVendas] = React.useState([]);
 
-    React.useEffect(()=> {
+    async function getData () {
         const token = localStorage.getItem("token");
+        console.log(token);
 		const res = axios.get("/vendas", {
 			headers: {
 				Authorization: `bearer ${token}`,
@@ -18,7 +20,13 @@ function ConsultarVendas(props){
             setVendas(query.data);
             console.log(query.data);
         })
+    };
+
+
+    React.useEffect(()=> {
+        getData();
     }, []);
+
 
     return(
         <Box sx={{ flexGrow: 1 }}>

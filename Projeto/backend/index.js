@@ -131,7 +131,6 @@ app.post(
 	},
 );
 
-<<<<<<< HEAD
 
 app.post("/addAdm", async (req, res) => {
 	try{
@@ -162,17 +161,11 @@ app.post("/addAdm", async (req, res) => {
 })
 
 
-=======
->>>>>>> b4a1df59a42fb7f79284394c74c25fd1cf22aaa0
 app.get("/", requireJWTAuth, async (req, res) => {
 	res.send("Hello, world!");
 });
 
-<<<<<<< HEAD
-app.post("/logout", requireJWTAuth, function (req, res, next) {
-=======
 app.post("/logout",requireJWTAuth, function (req, res, next) {
->>>>>>> b4a1df59a42fb7f79284394c74c25fd1cf22aaa0
 	req.logout(function (err) {
 		if (err) {
 			return next(err);
@@ -181,11 +174,7 @@ app.post("/logout",requireJWTAuth, function (req, res, next) {
 	});
 });
 
-<<<<<<< HEAD
-app.get("/vendas", requireJWTAuth, async (req, res) =>{
-=======
 app.get("/vendas",requireJWTAuth,  async (req, res) =>{
->>>>>>> b4a1df59a42fb7f79284394c74c25fd1cf22aaa0
 
     try{
         const vendas = await db.any("SELECT v.*, v.dt_embarque::VARCHAR(11), v.dt_venda::VARCHAR(11), a.nome as ag_nome, d.nome, c.nome as cli_nome FROM venda v JOIN agente a ON v.ag_vendedor = a.cpf JOIN destino d ON d.id = v.destino JOIN cliente c ON v.cliente = c.cpf;");
@@ -198,11 +187,7 @@ app.get("/vendas",requireJWTAuth,  async (req, res) =>{
 
 })
 
-<<<<<<< HEAD
-app.get("/clientes", requireJWTAuth, async (req, res) =>{
-=======
 app.get("/clientes",requireJWTAuth,  async (req, res) =>{
->>>>>>> b4a1df59a42fb7f79284394c74c25fd1cf22aaa0
     try{
         const clientes = await db.any("SELECT * FROM cliente;");
         console.log('Retornando todas os clientes');
@@ -213,11 +198,7 @@ app.get("/clientes",requireJWTAuth,  async (req, res) =>{
     }
 })
 
-<<<<<<< HEAD
-app.get("/agentes", requireJWTAuth, async (req, res) =>{
-=======
 app.get("/agentes",requireJWTAuth, async (req, res) =>{
->>>>>>> b4a1df59a42fb7f79284394c74c25fd1cf22aaa0
     try{
         const agentes = await db.any("SELECT nome, dtnasc::VARCHAR(11), a.cpf, i.*, i.ultima_modif::VARCHAR(11) as ultima_modificacao FROM agente a JOIN agente_info i ON a.cpf=i.cpf;");
         console.log('Retornando todos os agentes');
@@ -241,11 +222,7 @@ app.get("/destinos", requireJWTAuth, async (req, res) =>{
     
 })
 
-<<<<<<< HEAD
-app.get("/interesses", requireJWTAuth, async (req, res) =>{
-=======
 app.get("/interesses",requireJWTAuth, async (req, res) =>{
->>>>>>> b4a1df59a42fb7f79284394c74c25fd1cf22aaa0
     try{
         const interesses = await db.any("SELECT i.id, i.cliente_nome, i.data_interesse::VARCHAR(11), i.contato, i.qtd_passageiros, d.nome as destino FROM interesse i JOIN destino d ON i.destino = d.id;");
         console.log('Retornando todas os interesses');
@@ -256,11 +233,7 @@ app.get("/interesses",requireJWTAuth, async (req, res) =>{
     }
 })
 
-<<<<<<< HEAD
-app.get("/Relatorio_agente_e_data", requireJWTAuth, async (req, res) =>{
-=======
 app.get("/Relatorio_agente_e_data",requireJWTAuth, async (req, res) =>{
->>>>>>> b4a1df59a42fb7f79284394c74c25fd1cf22aaa0
     try{
         const relatorio = await db.any("SELECT a.nome, i.salario, i.comissao, v.* FROM agente a NATURAL JOIN agente_info i JOIN venda v ON v.ag_vendedor=a.cpf;");
         console.log('Retornando todas os relatorio de agente');
@@ -271,40 +244,50 @@ app.get("/Relatorio_agente_e_data",requireJWTAuth, async (req, res) =>{
     }
 })
 
-<<<<<<< HEAD
-app.post("/newAgente", requireJWTAuth, async (req, res) => {
-=======
-app.post("/newAgente",requireJWTAuth, (req, res) => {
->>>>>>> b4a1df59a42fb7f79284394c74c25fd1cf22aaa0
+app.post("http://localhost:3010/newAgente",requireJWTAuth, (req, res) => {
+	try {
+		const aNome = req.body.nome;
+    	const aCpf = req.body.cpf;
+    	const aDtnasc = req.body.dtnasc;
+        
+		db.none(
+			"INSERT INTO agente(nome, cpf, dtnasc) VALUES ($1, $2, $3);",
+			[aNome, aCpf, aDtnasc]
+		)
+        
+        res.sendStatus(200);
 
-    const aNome = req.body.nome;
-    const aCpf = req.body.cpf;
-    const aDtnasc = req.body.dtnasc;
-    const aFerias = req.body.ferias;
-    const aEnder = req.body.ender;
-    const aComissao = req.body.comissao;
-    const aSalario = req.body.salario;
-    const aAcesso = req.body.acesso;
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
 
-    db.none(
-        "INSERT INTO agente(nome, cpf, dtnasc::DATE) VALUES ($1, $2, $3);",
-        [aNome, aCpf, aDtnasc]
-    )
-
-    db.none(
-        "INSERT INTO agente_info(ferias_disp, comissao, ender, salario, ultima_modif, nivel_acesso, cpf) VALUES ($1, $2, $3, $4, NOW(), $5, $6);",
-        [aFerias, aComissao, aEnder, aSalario, aAcesso, aCpf]
-    )
-
-    res.sendStatus(200);
 })
 
+app.post("http://localhost:3010/newAgenteInfo",requireJWTAuth, async (req, res) => {
+    try {
+		const aFerias = req.body.ferias_disp;
+		const aCpf = req.body.cpf
+    	const aEnder = req.body.ender;
+    	const aComissao = req.body.comissao;
+    	const aSalario = req.body.salario;
+    	const aAcesso = req.body.acesso;
+        
+		db.none(
+			"INSERT INTO agente_info(ferias_disp, comissao, ender, salario, ultima_modif, nivel_acesso, cpf) VALUES ($1, $2, $3, $4, NOW(), $5, $6);",
+			[aFerias, aComissao, aEnder, aSalario, aAcesso, aCpf]
+		)
+        
+        res.sendStatus(200);
 
-<<<<<<< HEAD
-app.post("/newVenda", requireJWTAuth, async (req, res) => {
-=======
-app.post("/newVenda",requireJWTAuth, async (req, res) => {
->>>>>>> b4a1df59a42fb7f79284394c74c25fd1cf22aaa0
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+});
+
+
+app.post("http://localhost:3010/newVenda",requireJWTAuth, async (req, res) => {
     try {
         const vCliente = req.body.cliente;
         const vAg_vendedor = req.body.ag_vendedor;
@@ -350,11 +333,7 @@ app.post("/newInteresse", requireJWTAuth, async (req, res) => {
     }
 });
 
-<<<<<<< HEAD
-app.post("/newDestino", requireJWTAuth, async (req, res) => {
-=======
 app.post("/newDestino",requireJWTAuth, async (req, res) => {
->>>>>>> b4a1df59a42fb7f79284394c74c25fd1cf22aaa0
     try {
         const dnome = req.body.nome;
         const dpais = req.body.pais;

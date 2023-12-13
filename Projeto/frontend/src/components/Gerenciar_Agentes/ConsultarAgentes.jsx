@@ -3,11 +3,11 @@ import axios from "axios";
 import CollapsibleTableAgentes from "./CollapsibleTableAgentes";
 
 
-function ConsultarDestinos(props){
+function ConsultarAgentes(props){
 
     const [agentes, setAgentes] = React.useState([]);
 
-    React.useEffect(()=> {
+    async function getData () {
         const token = localStorage.getItem("token");
         console.log(token);
 		const res = axios.get("/agentes", {
@@ -19,6 +19,11 @@ function ConsultarDestinos(props){
             setAgentes(query.data);
             console.log(query.data);
         })
+    };
+
+
+    React.useEffect(()=> {
+        getData();
     }, []);
 
     return(
@@ -27,4 +32,5 @@ function ConsultarDestinos(props){
     );
 }
 
-export default ConsultarDestinos;
+export default ConsultarAgentes;
+
