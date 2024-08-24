@@ -59,11 +59,9 @@ O app é voltado para equipes internas de agências de viagens, como administrad
 
   ### 1. backend:
 
-  - addAdm.js: Um script provavelmente usado para adicionar administradores no backend.
+  - addAdm.js: Um script usado para adicionar administradores no backend.
   - index.js: Arquivo principal do backend, onde a aplicação pode ser iniciada.
   - package.json: Contém informações sobre dependências e scripts do backend.
-  - yarn-error.log: Log de erros relacionados ao Yarn.
-  - yarn.lock: Bloqueia as versões exatas das dependências instaladas pelo Yarn para garantir consistência.
 
   ### 2. frontend:
   #### public:
@@ -86,13 +84,9 @@ O app é voltado para equipes internas de agências de viagens, como administrad
 
     - index.js: Arquivo principal do frontend, onde a aplicação React é inicializada.
 
-    - package-lock.json: Arquivo de bloqueio de dependências gerado pelo npm.
-
-    - package.json: Contém informações sobre dependências e scripts do frontend.
-
   ### 3. Outros Arquivos:
-    - E22_BD_script.sql: Script SQL, possivelmente usado para configurar ou popular o banco de dados.
-    - pop_ficticia.sql: Outro script SQL, talvez para adicionar dados fictícios ao banco de dados.
+    - E22_BD_script.sql: Script SQL, usado para configurar o banco de dados.
+    - pop_ficticia.sql: Outro script SQL, usado para adicionar dados fictícios ao banco de dados.
 
 
 Agosto de 2023
